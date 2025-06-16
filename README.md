@@ -1,6 +1,6 @@
 # PPDB MAN 2 Kota Probolinggo
 
-Aplikasi web Pendaftaran Peserta Didik Baru (PPDB) untuk **MAN 2 Kota Probolinggo**. Proyek ini dibangun menggunakan **Laravel** sebagai *backend*, **Inertia.js** sebagai penghubung antara *backend* dan *frontend*, dan **React.js** untuk antarmuka pengguna. Fitur *styling* ditangani oleh **Tailwind CSS** yang diperkaya dengan komponen **Daisy UI**, serta manajemen *routing* menggunakan **Rombo**. Database yang digunakan adalah **SQLite** untuk kemudahan *setup* pada lingkungan pengembangan lokal.
+Aplikasi web Pendaftaran Peserta Didik Baru (PPDB) untuk **MAN 2 Kota Probolinggo**. Proyek ini dibangun menggunakan **Laravel** sebagai *backend*, **Inertia.js** sebagai penghubung antara *backend* dan *frontend*, dan **React.js** untuk antarmuka pengguna. Fitur *styling* ditangani oleh **Tailwind CSS** yang diperkaya dengan komponen **Daisy UI**, serta manajemen *animasi* menggunakan **Rombo**. Database yang digunakan adalah **SQLite** untuk kemudahan *setup* pada lingkungan pengembangan lokal.
 
 ## Fitur Utama
 
