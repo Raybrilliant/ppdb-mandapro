@@ -1,4 +1,4 @@
-import AdminLayout from "../../../layouts/admin-layout";
+import UserLayout from "@/layouts/user-layout";
 import axios from "axios";
 import { useState } from "react";
 import { useEffect } from "react";
@@ -333,5 +333,5 @@ function Profile() {
     );
 }
 
-Profile.layout = (page) => <AdminLayout>{page}</AdminLayout>;
+Profile.layout = (page) => <UserLayout>{page}</UserLayout>;
 export default Profile;

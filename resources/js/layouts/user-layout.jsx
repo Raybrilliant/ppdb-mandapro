@@ -1,6 +1,5 @@
-import { Link } from "@inertiajs/react";
 
-export default function AdminLayout({ children }) {
+export default function UserLayout({ children }) {
     return (
         <div className="bg-base-200">
             <div className="flex justify-between items-center bg-base-100 py-4 px-10 sticky">

@@ -1,5 +1,5 @@
 import { Link } from "@inertiajs/react";
-import AdminLayout from "../../../layouts/admin-layout";
+import UserLayout from "@/layouts/user-layout";
 
 const myData = {
     name: 'Raihan Fikri Brilliansyach',
@@ -270,5 +270,5 @@ function Dashboard() {
     );
 }
 
-Dashboard.layout = (page) => <AdminLayout>{page}</AdminLayout>;
+Dashboard.layout = (page) => <UserLayout>{page}</UserLayout>;
 export default Dashboard;

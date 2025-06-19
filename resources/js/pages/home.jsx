@@ -1,5 +1,5 @@
 import { Link } from "@inertiajs/react";
-import HomeLayout from "../../layouts/home-layout";
+import HomeLayout from "@/layouts/home-layout";
 
 const testimoni = [
     {

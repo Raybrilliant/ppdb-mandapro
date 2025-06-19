@@ -1,4 +1,4 @@
-import HomeLayout from "../../../layouts/home-layout";
+import HomeLayout from "@/layouts/home-layout";
 import { Link } from "@inertiajs/react";
 
 function Login() {

@@ -22,3 +22,18 @@ Route::prefix('dashboard')->group(function () {
         return inertia('user/profile');
     });
 });
+
+Route::prefix('admin')->group(function () {
+    Route::get('/', function () {
+        return inertia('admin/dashboard');
+    });
+    Route::get('/pendaftaran', function () {
+        return inertia('admin/pendaftaran');
+    });
+    Route::get('/berkas', function () {
+        return inertia('admin/berkas');
+    });
+    Route::get('/setting', function () {
+        return inertia('admin/setting');
+    });
+});
