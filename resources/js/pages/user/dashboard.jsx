@@ -14,6 +14,8 @@ const myData = {
     province: 'Jawa Timur',
     city: 'Probolinggo',
     photo: 'https://man2kotaprobolinggo.sch.id/wp-content/uploads/2024/11/IMG_20241123_201600.jpg',
+    status: true,
+    tahap: 2,
 }
 
 const parentData = {
@@ -76,6 +78,24 @@ const prestasi = [
         title: 'Juara 3 Olimpiade Bahasa Inggris',
         type: 'Nasional',
         year: 2024,
+    },
+]
+
+const tahap = [
+    {
+        id: 1,
+        tahap: 1,
+        name: "Verifikasi Berkas",
+    },
+    {
+        id: 2,
+        tahap: 2,
+        name: "Seleksi Online",
+    },
+    {
+        id: 3,
+        tahap: 3,
+        name: "Seleksi Offline",
     },
 ]
 
@@ -244,26 +264,20 @@ function Dashboard() {
             <div className="card outline outline-black my-10">
                 <div className="p-5">
                     <h2 className="card-title">Progress Pendaftaran</h2>
-                    <div className="flex items-center justify-between mt-5">
-                        <div className="outline outline-black p-2 rounded">
-                            <p>Seleksi Administrasi ✅</p>
+                    <ul className="steps w-full">
+                        {tahap.map((item) => (
+                            <li key={item.id} className={"step" + (item.id <= myData.tahap ? " step-neutral" : "")}>{item.name}</li>
+                        ))}
+                    </ul>
+                    {myData.status ? (
+                        <div role="alert" className="alert alert-success mt-5">
+                            <span>Selamat ! <span className="font-bold">{myData.name}</span> Anda berhasil lolos {tahap.find((item) => item.id === myData.tahap).name}</span>
                         </div>
-                        <div className="">
-                            <p>Verifikasi Berkas</p>
+                    ) : (
+                        <div role="alert" className="alert alert-error mt-5">
+                            <span>Mohon Maaf ! <span className="font-bold">{myData.name}</span> Anda tidak lolos Tahap {tahap.find((item) => item.id === myData.tahap).name}</span>
                         </div>
-                        <div className="">
-                            <p>Tes Akademik</p>
-                        </div>
-                        <div className="">
-                            <p>Tes Kesehatan</p>
-                        </div>
-                        <div className="">
-                            <p>Pengumuman Kelulusan</p>
-                        </div>
-                    </div>
-                    <div role="alert" className="alert alert-success mt-5">
-                        <span>Selamat ! <span className="font-bold">{myData.name}</span> Anda berhasil lolos Seleksi Administrasi</span>
-                    </div>
+                    )}
                 </div>
             </div>
         </div>

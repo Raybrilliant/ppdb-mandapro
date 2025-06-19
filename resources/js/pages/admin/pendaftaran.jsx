@@ -125,7 +125,6 @@ const Pendaftaran = () => {
                                 <td>{item.province}</td>
                                 <td><img src={item.photo} alt="photo" className="w-20 h-20 object-cover" /></td>
                                 <td>
-                                    <button className="btn btn-warning btn-xs">Edit</button>
                                     <button className="btn btn-error btn-xs">Delete</button>
                                 </td>
                             </tr>

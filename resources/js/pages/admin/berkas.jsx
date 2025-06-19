@@ -41,7 +41,6 @@ const Berkas = () => {
                                 <td><a href={item.file_ijazah} target="_blank" rel="noopener noreferrer">Lihat</a></td>
                                 <td><a href={item.file_raport} target="_blank" rel="noopener noreferrer">Lihat</a></td>
                                 <td>
-                                    <button className="btn btn-warning btn-xs">Edit</button>
                                     <button className="btn btn-error btn-xs">Delete</button>
                                 </td>
                             </tr>

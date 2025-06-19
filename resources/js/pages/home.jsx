@@ -4,17 +4,17 @@ import HomeLayout from "@/layouts/home-layout";
 const testimoni = [
     {
         name: 'Aisyah Nuril',
-        image:'',
+        image:'/testimoni1.png',
         message: 'Sekolah di MAN 2 Kota Probolinggo memberikan pengalaman yang luar biasa, saya sangat menyarankan sekolah ini.',
     },
     {
         name: 'Ahmad Suruji',
-        image:'',
+        image:'/testimoni2.png',
         message: 'Sekolah di MAN 2 Kota Probolinggo memberikan pengalaman yang luar biasa, saya sangat menyarankan sekolah ini.',
     },
     {
         name: 'Rocky',
-        image:'',
+        image:'/testimoni3.png',
         message: 'Sekolah di MAN 2 Kota Probolinggo memberikan pengalaman yang luar biasa, saya sangat menyarankan sekolah ini.',
     },
 ]
@@ -125,12 +125,12 @@ function Home() {
                     {/* Right */}
                     <div className='grid grid-rows-2 gap-2'>
                         <div className='w-full overflow-hidden rounded-xl bg-emerald-600'>
-                            <div className='grid grid-cols-3 items-center p-5'>
+                            <div className='grid grid-cols-3 overflow-hidden items-center p-5'>
                                 <div className='text-white space-y-3 col-span-2'>
-                                    <h1 className="text-2xl font-bold">Testimoni Siswa</h1>
-                                    <p className="text-xl">Sekolah di MAN 2 Kota Probolinggo memberikan pengalaman yang luar biasa, saya sangat menyarankan sekolah ini.</p>
+                                    <p className="text-lg">{testimoni[0].message}</p>
+                                    <p className="text-lg italic">~ {testimoni[0].name}</p>
                                 </div>
-                                <img src="" alt="testimoni" />
+                                <img src={testimoni[0].image} alt="testimoni" className='object-cover h-32 w-full object-top mx-auto' />
                             </div>
                         </div>
                         {/* Right Bottom */}
