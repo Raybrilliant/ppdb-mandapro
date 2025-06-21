@@ -1,67 +1,8 @@
 import { Link } from "@inertiajs/react";
 import UserLayout from "@/layouts/user-layout";
-
-const myData = {
-    name: 'Raihan Fikri Brilliansyach',
-    id: '1234567890',
-    nisn: '1234567890',
-    gender: 'Laki-laki',
-    birthplace: 'Probolinggo',
-    birthdate: '2007-06-14',
-    phone: '081234567890',
-    email: 'raihanfikrib@gmail.com',
-    address: 'Jl. Probolinggo No. 123',
-    province: 'Jawa Timur',
-    city: 'Probolinggo',
-    photo: 'https://man2kotaprobolinggo.sch.id/wp-content/uploads/2024/11/IMG_20241123_201600.jpg',
-    status: true,
-    tahap: 2,
-}
-
-const parentData = {
-    fatherName : "Budi Setiawan",
-    motherName : "Siti Aminah",
-    fatherPhone : "081234567890",
-    motherPhone : "081234567890",
-    fatherJob : "PNS",
-    motherJob : "Ibu Rumah Tangga",
-    fatherSalary : 5000000,
-    motherSalary : 5000000,
-}
-
-const schoolData = {
-    name: 'MTsN Kota Probolinggo',
-    address: 'Jl. Probolinggo No. 123',
-    city: 'Probolinggo',
-    province: 'Jawa Timur',
-}
-
-const raport = [
-    {
-        name: 'Matematika',
-        semester1: 82,
-        semester2: 85,
-        semester3: 88,
-        semester4: 90,
-        semester5: 92,
-    },
-    {
-        name: 'Bahasa Indonesia',
-        semester1: 78,
-        semester2: 80,
-        semester3: 82,
-        semester4: 84,
-        semester5: 86,
-    },
-    {
-        name: 'Bahasa Inggris',
-        semester1: 75,
-        semester2: 77,
-        semester3: 79,
-        semester4: 81,
-        semester5: 83,
-    },
-]
+import { useForm } from "@inertiajs/react";
+import { useEffect, useState } from "react";
+import { regencies, provinces } from "@/components/geolocation";
 
 const prestasi = [
     {
@@ -99,7 +40,53 @@ const tahap = [
     },
 ]
 
-function Dashboard() {
+function Dashboard({user,mapel}) {
+    console.log(user);
+    const [lengkap, setLengkap] = useState(false);
+    const {data, setData} = useForm({
+        grades: {
+            1:{},
+            2:{},
+            3:{},
+            4:{},
+            5:{},
+        },
+    });
+
+    console.log(data);
+
+    // This useEffect populates the `data.grades` state initially
+    useEffect(() => {
+        if (user && user.reports) {
+            const initialGrades = {
+                1: {},
+                2: {},
+                3: {},
+                4: {},
+                5: {},
+            };
+
+            user.reports.forEach(report => {
+                const semester = report.semester;
+                const subjectId = report.subject_id;
+                const grade = report.grade;
+
+                // Ensure the semester property exists and is an object
+                if (initialGrades[semester]) {
+                    initialGrades[semester][subjectId] = grade;
+                }
+            });
+
+            // Set the initial grades in the form data
+            setData('grades', initialGrades);
+        }
+
+        if (user.user_detail && user.parents && user.reports && user.documents) {
+            setLengkap(true);
+        }
+
+    }, [user]);
+   
     return (
         <div>
             {/* Pengumuman */}
@@ -112,14 +99,14 @@ function Dashboard() {
                 <div className="p-5">
                     <div className="flex items-center justify-between">
                         <div className="flex items-center gap-5">
-                            <img src={myData.photo} alt="photo" className="w-[10em] h-[15em] object-cover object-center rounded " />
+                            <img src={'/storage/' + user?.user_detail?.photo} alt="photo" className="w-[10em] h-[15em] object-cover object-center rounded " />
                             <div className="space-y-3">
-                                <h2 className="card-title">{myData.name}</h2>
+                                <h2 className="card-title">{user?.name}</h2>
                                 <div className="flex items-center gap-2">
-                                    <p className="text-sm font-semibold opacity-50">No Pendaftaran : {myData.id}</p>
-                                    <p className="text-sm font-semibold opacity-50">Status : <span className="text-red-600 font-bold">Belum Lengkap</span></p>
+                                    <p className="text-sm font-semibold opacity-50">No Pendaftaran : {user?.id}</p>
+                                    <p className="text-sm font-semibold opacity-50">Status : {lengkap ? <span className="text-green-600 font-bold">Lengkap</span> : <span className="text-red-600 font-bold">Belum Lengkap</span>}</p>
                                 </div>
-                                <Link href="/dashboard/profile" className="btn btn-accent ">Lengkapi Profil</Link>
+                                <Link href="/dashboard/profile/edit/1" className="btn btn-accent ">{lengkap ? 'Ubah Profil' : 'Lengkapi Profil'}</Link>
                             </div>
                         </div>
                     </div>
@@ -130,42 +117,42 @@ function Dashboard() {
                             <h2 className="card-title">Data Pribadi</h2>
                             <div className="flex items-center justify-between">
                                 <p>NISN</p>
-                                <p>{myData.nisn}</p>
+                                <p>{user?.user_detail?.nisn}</p>
                             </div>
                             <hr />
                             <div className="flex items-center justify-between">
                                 <p>No WhatsApp</p>
-                                <p>{myData.phone}</p>
+                                <p>{user?.user_detail?.phone}</p>
                             </div>
                             <hr />
                             <div className="flex items-center justify-between">
                                 <p>Email</p>
-                                <p>{myData.email}</p>
+                                <p>{user?.email}</p>
                             </div>
                             <hr />
                             <div className="flex items-center justify-between">
                                 <p>Jenis Kelamin</p>
-                                <p>{myData.gender}</p>
+                                <p>{user?.user_detail?.gender}</p>
                             </div>
                             <hr />
                             <div className="flex items-center justify-between">
                                 <p>Tempat Lahir</p>
-                                <p>{myData.birthplace}</p>
+                                <p>{user?.user_detail?.birth_place}</p>
                             </div>
                             <hr />
                             <div className="flex items-center justify-between">
                                 <p>Tanggal Lahir</p>
-                                <p>{new Date(myData.birthdate).toLocaleDateString("id-ID", { day: "numeric", month: "long", year: "numeric" })}</p>
+                                <p>{new Date(user?.user_detail?.birth_date).toLocaleDateString("id-ID", { day: "numeric", month: "long", year: "numeric" })}</p>
                             </div>
                             <hr />
                             <div className="flex items-center justify-between">
                                 <p>Alamat</p>
-                                <p>{myData.address}, {myData.city}, {myData.province}</p>
+                                <p className="uppercase">{user?.user_detail?.address}, {regencies.find(regency => regency.id == user?.user_detail?.city)?.name}, {provinces.find(province => province.id == user?.user_detail?.province)?.name}</p>
                             </div>
                             <hr />
                             <div className="flex items-center justify-between">
                                 <p>Sekolah Asal</p>
-                                <p>{schoolData.name}</p>
+                                <p>{user?.user_detail?.school}</p>
                             </div>
                         </div>
                         {/* Data Orang Tua */}
@@ -173,39 +160,45 @@ function Dashboard() {
                             <h2 className="card-title">Data Orang Tua</h2>
                             <div className="flex items-center justify-between gap-2">
                                 <p>Nama Ayah</p>
-                                <p>{parentData.fatherName}</p>
+                                <p>{user?.parents?.dad_name}</p>
                             </div>
                             <hr />
                             <div className="flex items-center justify-between gap-2">
                                 <p>No WhatsApp Ayah</p>
-                                <p>{parentData.fatherPhone}</p>
+                                <p>{user?.parents?.dad_phone}</p>
                             </div>
                             <hr />
                             <div className="flex items-center justify-between gap-2">
                                 <p>Pekerjaan Ayah</p>
-                                <p>{parentData.fatherJob}</p>
+                                <p>{user?.parents?.dad_job}</p>
                             </div>
                             <hr />
                             <div className="flex items-center justify-between gap-2">
                                 <p>Nama Ibu</p>
-                                <p>{parentData.motherName}</p>
+                                <p>{user?.parents?.mom_name}</p>
                             </div>
                             <hr />
                             <div className="flex items-center justify-between gap-2">
                                 <p>No WhatsApp Ibu</p>
-                                <p>{parentData.motherPhone}</p>
+                                <p>{user?.parents?.mom_phone}</p>
                             </div>
                             <hr />
                             <div className="flex items-center justify-between gap-2">
                                 <p>Pekerjaan Ibu</p>
-                                <p>{parentData.motherJob}</p>
+                                <p>{user?.parents?.mom_job}</p>
                             </div>
                             <hr />
                             <div className="flex items-center justify-between gap-2">
                                 <p>Penghasilan Orangtua</p>
-                                <p>{new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR" }).format(parentData.fatherSalary + parentData.motherSalary)}</p>
+                                <p>{new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR" }).format(user?.parents?.monthly_salary)}</p>
                             </div>
                         </div>
+                        {/* Document */}
+                        <section className="flex gap-2">
+                            <a href={'/storage/' + user?.documents?.raport} target="_blank" rel="noopener noreferrer" disabled={!user?.documents?.raport} className="btn btn-primary">Raport</a>
+                            <a href={'/storage/' + user?.documents?.kartu_keluarga} target="_blank" rel="noopener noreferrer" disabled={!user?.documents?.kartu_keluarga} className="btn btn-primary">Kartu Keluarga</a>
+                            <a href={'/storage/' + user?.documents?.sertifikat_lomba} target="_blank" rel="noopener noreferrer" disabled={!user?.documents?.sertifikat_lomba} className="btn btn-primary">Prestasi</a>
+                        </section>
                     </div>
                 </div>
             </div>
@@ -213,7 +206,7 @@ function Dashboard() {
             <div className="card outline outline-black my-10">
                 <div className="p-5">
                     <h2 className="card-title">Raport</h2>
-                    <table className="table table-zebra">
+                    <table className=" table table-zebra">
                         <thead>
                             <tr>
                                 <th>Mapel</th>
@@ -226,15 +219,33 @@ function Dashboard() {
                             </tr>
                         </thead>
                         <tbody>
-                            {raport.map((raport, index) => (
+                            {mapel.map((mapel, index) => (
                                 <tr key={index}>
-                                    <td>{raport.name}</td>
-                                    <td>{raport.semester1}</td>
-                                    <td>{raport.semester2}</td>
-                                    <td>{raport.semester3}</td>
-                                    <td>{raport.semester4}</td>
-                                    <td>{raport.semester5}</td>
-                                    <td>{Math.round((raport.semester1 + raport.semester2 + raport.semester3 + raport.semester4 + raport.semester5) / 5)}</td>
+                                    <td>{mapel.name}</td>
+                                    {[1,2,3,4,5].map((semester) => (
+                                        <td key={semester}>{data.grades[semester][mapel.id]}</td>
+                                    ))}
+                                    <td>
+                                        {(() => {
+                                            const gradesForSubject = [
+                                                data.grades[1]?.[mapel.id],
+                                                data.grades[2]?.[mapel.id],
+                                                data.grades[3]?.[mapel.id],
+                                                data.grades[4]?.[mapel.id],
+                                                data.grades[5]?.[mapel.id]
+                                            ];
+                                            const validGrades = gradesForSubject
+                                                .filter(grade => grade !== undefined && grade !== null && grade !== '')
+                                                .map(grade => parseFloat(grade));
+
+                                            if (validGrades.length > 0) {
+                                                const sum = validGrades.reduce((acc, current) => acc + current, 0);
+                                                return Math.round(sum / validGrades.length);
+                                            } else {
+                                                return 'N/A';
+                                            }
+                                        })()}
+                                    </td>
                                 </tr>
                             ))}
                         </tbody>
@@ -266,17 +277,19 @@ function Dashboard() {
                     <h2 className="card-title">Progress Pendaftaran</h2>
                     <ul className="steps w-full">
                         {tahap.map((item) => (
-                            <li key={item.id} className={"step" + (item.id <= myData.tahap ? " step-neutral" : "")}>{item.name}</li>
+                            <li key={item.id} className={"step" + (item.id <= user?.user_detail?.tahap ? " step-neutral" : "")}>{item.name}</li>
                         ))}
                     </ul>
-                    {myData.status ? (
-                        <div role="alert" className="alert alert-success mt-5">
-                            <span>Selamat ! <span className="font-bold">{myData.name}</span> Anda berhasil lolos {tahap.find((item) => item.id === myData.tahap).name}</span>
+                    {user?.user_detail?.status == 2 ? (
+                        <div role="alert" className="alert alert-error mt-5">
+                            <span>Mohon Maaf ! <span className="font-bold">{user?.name}</span> Anda tidak lolos Tahap {tahap?.find((item) => item.id === user?.user_detail?.tahap)?.name}</span>
                         </div>
                     ) : (
-                        <div role="alert" className="alert alert-error mt-5">
-                            <span>Mohon Maaf ! <span className="font-bold">{myData.name}</span> Anda tidak lolos Tahap {tahap.find((item) => item.id === myData.tahap).name}</span>
-                        </div>
+                        user?.user_detail?.status == 1 ? (
+                            <div role="alert" className="alert alert-success mt-5">
+                                <span>Selamat ! <span className="font-bold">{user?.name}</span> Anda berhasil lolos {tahap?.find((item) => item.id === user?.user_detail?.tahap)?.name}</span>
+                            </div>
+                        ) : null
                     )}
                 </div>
             </div>
