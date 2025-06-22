@@ -58,34 +58,7 @@ const principle = {
     message: "Di Madrasah Aliyah Negeri 2 Kota Probolinggo, kami percaya bahwa pendidikan adalah kunci untuk membuka masa depan yang lebih cerah. Kami bangga telah membantu banyak lulusan kami menembus perguruan tinggi favorit, baik di dalam maupun luar negeri, serta meraih prestasi yang membanggakan di berbagai bidang. <br /> <br /> Dengan pendekatan pendidikan yang menyeluruh—memadukan kecerdasan akademis dan penguatan karakter berbasis nilai-nilai Islam—kami berkomitmen untuk terus mencetak generasi yang siap menghadapi tantangan dunia global. Kami percaya bahwa setiap siswa memiliki potensi luar biasa yang perlu dibimbing dan dikembangkan. <br /> <br /> Semoga perjalanan pendidikan yang akan dihadapi putra-putri Anda di sini menjadi langkah menuju kesuksesan mereka.",
 }
 
-const faq = [
-    {
-        question: 'Is MAN 2 Kota Probolinggo terdaftar di Badan Pusat Data Pendidikan (BPS)?',
-        answer: 'MAN 2 Kota Probolinggo terdaftar di Badan Pusat Data Pendidikan (BPS) sebagai Madrasah Aliyah Negeri 2 Kota Probolinggo.',
-    },
-    {
-        question: 'Is MAN 2 Kota Probolinggo terdaftar di Badan Pusat Data Pendidikan (BPS)?',
-        answer: 'MAN 2 Kota Probolinggo terdaftar di Badan Pusat Data Pendidikan (BPS) sebagai Madrasah Aliyah Negeri 2 Kota Probolinggo.',
-    },
-    {
-        question: 'Is MAN 2 Kota Probolinggo terdaftar di Badan Pusat Data Pendidikan (BPS)?',
-        answer: 'MAN 2 Kota Probolinggo terdaftar di Badan Pusat Data Pendidikan (BPS) sebagai Madrasah Aliyah Negeri 2 Kota Probolinggo.',
-    },
-    {
-        question: 'Is MAN 2 Kota Probolinggo terdaftar di Badan Pusat Data Pendidikan (BPS)?',
-        answer: 'MAN 2 Kota Probolinggo terdaftar di Badan Pusat Data Pendidikan (BPS) sebagai Madrasah Aliyah Negeri 2 Kota Probolinggo.',
-    },
-    {
-        question: 'Is MAN 2 Kota Probolinggo terdaftar di Badan Pusat Data Pendidikan (BPS)?',
-        answer: 'MAN 2 Kota Probolinggo terdaftar di Badan Pusat Data Pendidikan (BPS) sebagai Madrasah Aliyah Negeri 2 Kota Probolinggo.',
-    },
-    {
-        question: 'Is MAN 2 Kota Probolinggo terdaftar di Badan Pusat Data Pendidikan (BPS)?',
-        answer: 'MAN 2 Kota Probolinggo terdaftar di Badan Pusat Data Pendidikan (BPS) sebagai Madrasah Aliyah Negeri 2 Kota Probolinggo.',
-    },
-]
-
-function Home() {
+function Home({faqs,user}) {
     return (
         <>
         {/* Header */}
@@ -98,7 +71,7 @@ function Home() {
                     <Link href="/login"><button className="bg-white cursor-pointer font-semibold px-10 py-4 rounded-full border">Masuk</button></Link>
                 </div>
                 <div>
-                    <h1 className="text-4xl font-black">1000+</h1>
+                    <h1 className="text-4xl font-black">{user}+</h1>
                     <p className="text-xl font-semibold text-muted-foreground">Orang yang sudah terdaftar</p>
                 </div>
                 <div>
@@ -170,11 +143,11 @@ function Home() {
             <section className="py-12 px-20 space-y-5">
                 <h1 className="text-6xl font-black capitalize">Frequently Asked Questions</h1>
                 <div className="join join-vertical bg-base-100 w-full">
-                    {faq.map((item, index) => (
+                    {faqs?.map((item, index) => (
                         <div key={index} className="collapse collapse-arrow border border-base-300">
                             <input type="radio" name="my-accordion-2"/>
-                            <div className="collapse-title font-semibold">{item.question}</div>
-                            <div className="collapse-content text-sm">{item.answer}</div>
+                            <div className="collapse-title font-semibold">{item?.question}</div>
+                            <div className="collapse-content text-sm">{item?.answer}</div>
                         </div>
                     ))}
                 </div>

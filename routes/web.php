@@ -6,10 +6,14 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\ParentsController;
 use App\Http\Controllers\ReportsController;
 use App\Http\Controllers\DocumentsController;
+use App\Http\Controllers\AnnouncementsController;
+use App\Http\Controllers\LevelsController;
+use App\Http\Controllers\SettingsController;
+use App\Http\Controllers\SubjectsController;
+use App\Http\Controllers\FAQsController;
+use App\Http\Controllers\LandingPagesController;
 
-Route::get('/', function () {
-    return inertia('home');
-});
+Route::get('/', [LandingPagesController::class, 'index']);
 
 Route::get('/login', function () {
     return inertia('auth/login');
@@ -46,7 +50,34 @@ Route::prefix('admin')->group(function () {
     Route::get('/', [UserDetailController::class, 'countDashboard']);
     Route::get('/pendaftaran', [UserDetailController::class, 'index']);
     Route::get('/berkas', [UserDetailController::class, 'showBerkas']);
-    Route::get('/setting', function () {
-        return inertia('admin/setting');
+    Route::prefix('/setting')->group(function () {
+        Route::get('/', [SettingsController::class, 'index']);
+        // Pengumuman
+        Route::get('/pengumuman', [AnnouncementsController::class, 'create']);
+        Route::post('/pengumuman', [AnnouncementsController::class, 'store']);
+        Route::get('/pengumuman/{id}', [AnnouncementsController::class, 'edit']);
+        Route::put('/pengumuman/{id}', [AnnouncementsController::class, 'update']);
+        Route::delete('/pengumuman/{id}', [AnnouncementsController::class, 'destroy']);
+
+        // Tahapan
+        Route::get('/tahapan', [LevelsController::class, 'create']);
+        Route::post('/tahapan', [LevelsController::class, 'store']);
+        Route::get('/tahapan/{id}', [LevelsController::class, 'edit']);
+        Route::put('/tahapan/{id}', [LevelsController::class, 'update']);
+        Route::delete('/tahapan/{id}', [LevelsController::class, 'destroy']);
+
+        // Mapel
+        Route::get('/mapel', [SubjectsController::class, 'create']);
+        Route::post('/mapel', [SubjectsController::class, 'store']);
+        Route::get('/mapel/{id}', [SubjectsController::class, 'edit']);
+        Route::put('/mapel/{id}', [SubjectsController::class, 'update']);
+        Route::delete('/mapel/{id}', [SubjectsController::class, 'destroy']);
+
+        // FAQ
+        Route::get('/faq', [FAQsController::class, 'create']);
+        Route::post('/faq', [FAQsController::class, 'store']);
+        Route::get('/faq/{id}', [FAQsController::class, 'edit']);
+        Route::put('/faq/{id}', [FAQsController::class, 'update']);
+        Route::delete('/faq/{id}', [FAQsController::class, 'destroy']);
     });
 });

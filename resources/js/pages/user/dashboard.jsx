@@ -282,7 +282,7 @@ function Dashboard({user,mapel}) {
                     </ul>
                     {user?.user_detail?.status == 2 ? (
                         <div role="alert" className="alert alert-error mt-5">
-                            <span>Mohon Maaf ! <span className="font-bold">{user?.name}</span> Anda tidak lolos Tahap {tahap?.find((item) => item.id === user?.user_detail?.tahap)?.name}</span>
+                            <span>Mohon Maaf ! <span className="font-bold">{user?.name}</span> Anda tidak lolos Tahap {tahap?.find((item) => item.id === user?.user_detail?.tahap)?.name} dengan alasan {user?.user_detail?.message}</span>
                         </div>
                     ) : (
                         user?.user_detail?.status == 1 ? (

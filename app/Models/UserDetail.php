@@ -22,6 +22,7 @@ class UserDetail extends Model
         'user_id',
         'status',
         'tahap',
+        'message',
     ];
 
     public function user()

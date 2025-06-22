@@ -26,6 +26,7 @@ return new class extends Migration
             $table->string('school');
             $table->integer('status')->default(0);
             $table->integer('tahap')->default(1);
+            $table->string('message')->nullable();
             $table->string('photo')->nullable();
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');

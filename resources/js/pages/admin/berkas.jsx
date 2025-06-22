@@ -22,12 +22,12 @@ const Berkas = ({user}) => {
                     <tbody>
                         {user?.data.map((item, index) => (
                             <tr key={index}>
-                                <td>{item.id}</td>
-                                <td>{item.name}</td>
-                                <td>{new Date(item.created_at).toLocaleDateString('id-ID', { year: 'numeric', month: 'long', day: 'numeric' })}</td>
-                                <td><Link href={item.documents.kartu_keluarga} className="btn btn-xs btn-info" target="_blank" rel="noopener noreferrer">Lihat</Link></td>
-                                <td><Link href={item.documents.raport} className="btn btn-xs btn-info" target="_blank" rel="noopener noreferrer">Lihat</Link></td>
-                                <td><Link href={item.documents.sertifikat_lomba} className="btn btn-xs btn-info" target="_blank" rel="noopener noreferrer">Lihat</Link></td>
+                                <td>{item?.id}</td>
+                                <td>{item?.name}</td>
+                                <td>{new Date(item?.created_at).toLocaleDateString('id-ID', { year: 'numeric', month: 'long', day: 'numeric' })}</td>
+                                <td><Link href={item?.documents?.kartu_keluarga} disabled={!item?.documents?.kartu_keluarga} className="btn btn-xs btn-info" target="_blank" rel="noopener noreferrer">Lihat</Link></td>
+                                <td><Link href={item?.documents?.raport} disabled={!item?.documents?.raport} className="btn btn-xs btn-info" target="_blank" rel="noopener noreferrer">Lihat</Link></td>
+                                <td><Link href={item?.documents?.sertifikat_lomba} disabled={!item?.documents?.sertifikat_lomba} className="btn btn-xs btn-info" target="_blank" rel="noopener noreferrer">Lihat</Link></td>
                                 <td>
                                     <button className="btn btn-error btn-xs">Delete</button>
                                 </td>

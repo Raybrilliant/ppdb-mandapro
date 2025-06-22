@@ -2,31 +2,6 @@ import AdminLayout from "@/layouts/admin-layout";
 import { Link } from "@inertiajs/react";
 import { Plus } from "lucide-react";
 
-const pengumuman = [
-    {
-        id: 1,
-        name: "Siswa yang lolos dapat melakukan pendaftaraan ulang melalui link berikut https://man2kotaprobolinggo.sch.id/pendaftaran",
-        tahap: 1,
-    }
-]
-
-const tahap = [
-    {
-        id: 1,
-        tahap: 1,
-        name: "Verifikasi Berkas",
-    },
-    {
-        id: 2,
-        tahap: 2,
-        name: "Seleksi Online",
-    },
-    {
-        id: 3,
-        tahap: 3,
-        name: "Seleksi Offline",
-    },
-]
 const testimoni = [
     {
         id: 1,
@@ -48,7 +23,9 @@ const faq = [
         answer: "Siswa yang lolos dapat melakukan pendaftaraan ulang melalui link berikut https://man2kotaprobolinggo.sch.id/pendaftaran",
     }
 ]
-const Setting = () => {
+const Setting = ({levels, testimonis, programs, faqs, subjects}) => {
+    console.log(levels);
+    
     return (
         <div className="space-y-4">
             <h1 className="text-2xl font-semibold">Setting</h1>
@@ -62,21 +39,22 @@ const Setting = () => {
 
                 <thead>
                     <tr>
+                        <th>No</th>
                         <th>Pengumuman</th>
                         <th>Tahap</th>
                         <th>Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {pengumuman.map((item) => (
-                        <tr key={item.id}>
-                            <td className="w-1/2">{item.name}</td>
-                            <td>{item.tahap}</td>
-                            <td>
-                                <button className="btn btn-warning btn-xs">Edit</button>
-                                <button className="btn btn-error btn-xs">Delete</button>
-                            </td>
-                        </tr>
+                    {levels.map((item, index) => (
+                        item.announcement ? (
+                            <tr key={item.announcement?.id}>
+                                <td>{index + 1}</td>
+                                <td className="w-1/2">{item.announcement?.content}</td>
+                                <td>{ item.name}</td>
+                                <td><Link href={`/admin/setting/pengumuman/${item.announcement?.id}`} className="btn btn-warning btn-xs">Edit</Link></td>
+                            </tr>
+                        ) : null
                     ))}
                 </tbody>
             </table>
@@ -85,35 +63,60 @@ const Setting = () => {
             {/* Tahap */}
             <div className="flex justify-between items-center">
                 <h2 className="text-xl font-semibold">Tahap</h2>
-                <Link href="/admin/setting/tahap" className="btn btn-neutral btn-sm"><Plus/> Tambah Tahap</Link>
+                <Link href="/admin/setting/tahapan" className="btn btn-neutral btn-sm"><Plus/> Tambah Tahap</Link>
             </div>
             <div className="overflow-x-auto">
                 <table className="table table-zebra">
 
                 <thead>
                     <tr>
-                        <th>Tahap</th>
+                        <th>No</th>
                         <th>Nama</th>
                         <th>Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {tahap.map((item) => (
-                        <tr key={item.id}>
-                            <td>{item.tahap}</td>
+                    {levels.map((item, index) => (
+                        <tr key={index}>
+                            <td>{index + 1}</td>
                             <td className="w-1/2">{item.name}</td>
-                            <td>
-                                <button className="btn btn-warning btn-xs">Edit</button>
-                                <button className="btn btn-error btn-xs">Delete</button>
-                            </td>
+                            <td><Link href={`/admin/setting/tahapan/${item.id}`} className="btn btn-warning btn-xs">Edit</Link></td>
                         </tr>
                     ))}
                 </tbody>
             </table>
             </div>
             <hr />
-            {/* Testimoni */}
+            {/* Mapel */}
             <div className="flex justify-between items-center">
+                <h2 className="text-xl font-semibold">Mapel</h2>
+                <Link href="/admin/setting/mapel" className="btn btn-neutral btn-sm"><Plus/> Tambah Mapel</Link>
+            </div>
+            <div className="overflow-x-auto">
+                <table className="table table-zebra">
+
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Nama</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {subjects.map((item, index) => (
+                        <tr key={index}>
+                            <td>{index + 1}</td>
+                            <td className="w-1/2">{item.name}</td>
+                            <td><Link href={`/admin/setting/mapel/${item.id}`} className="btn btn-warning btn-xs">Edit</Link></td>
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
+            </div>
+            <hr />
+
+            {/* Testimoni */}
+            {/* <div className="flex justify-between items-center">
                 <h2 className="text-xl font-semibold">Testimoni</h2>
                 <Link href="/admin/setting/testimoni" className="btn btn-neutral btn-sm"><Plus/> Tambah Testimoni</Link>
             </div>
@@ -122,28 +125,29 @@ const Setting = () => {
 
                 <thead>
                     <tr>
+                        <th>No</th>
                         <th>Testimoni</th>
                         <th>Deskripsi</th>
                         <th>Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {testimoni.map((item) => (
-                        <tr key={item.id}>
+                    {testimonis.map((item, index) => (
+                        <tr key={index}>
+                            <td>{index + 1}</td>
                             <td>{item.name}</td>
                             <td>{item.description}</td>
                             <td>
                                 <button className="btn btn-warning btn-xs">Edit</button>
-                                <button className="btn btn-error btn-xs">Delete</button>
                             </td>
                         </tr>
                     ))}
                 </tbody>
             </table>
             </div>
-            <hr />
+            <hr /> */}
             {/* Program */}
-            <div className="flex justify-between items-center">
+            {/* <div className="flex justify-between items-center">
                 <h2 className="text-xl font-semibold">Program</h2>
                 <Link href="/admin/setting/program" className="btn btn-neutral btn-sm"><Plus/> Tambah Program</Link>
             </div>
@@ -152,26 +156,27 @@ const Setting = () => {
 
                 <thead>
                     <tr>
+                        <th>No</th>
                         <th>Program</th>
                         <th>Deskripsi</th>
                         <th>Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {program.map((item) => (
-                        <tr key={item.id}>
+                    {programs.map((item, index) => (
+                        <tr key={index}>
+                            <td>{index + 1}</td>
                             <td>{item.name}</td>
                             <td>{item.description}</td>
                             <td>
                                 <button className="btn btn-warning btn-xs">Edit</button>
-                                <button className="btn btn-error btn-xs">Delete</button>
                             </td>
                         </tr>
                     ))}
                 </tbody>
             </table>
             </div>
-            <hr />
+            <hr /> */}
             {/* FAQ */}
             <div className="flex justify-between items-center">
                 <h2 className="text-xl font-semibold">FAQ</h2>
@@ -182,19 +187,20 @@ const Setting = () => {
 
                 <thead>
                     <tr>
+                        <th>No</th>
                         <th>Pertanyaan</th>
                         <th>Jawaban</th>
                         <th>Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {faq.map((item) => (
-                        <tr key={item.id}>
+                    {faqs.map((item, index) => (
+                        <tr key={index}>
+                            <td>{index + 1}</td>
                             <td>{item.question}</td>
                             <td>{item.answer}</td>
                             <td>
-                                <button className="btn btn-warning btn-xs">Edit</button>
-                                <button className="btn btn-error btn-xs">Delete</button>
+                                <Link href={`/admin/setting/faq/${item.id}`} className="btn btn-warning btn-xs">Edit</Link>
                             </td>
                         </tr>
                     ))}

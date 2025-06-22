@@ -20,7 +20,7 @@ const Pendaftaran = ({user}) => {
 
     const handleSelectAll = () => {
         setAllSelected(!allSelected);
-        setSelected(allSelected ? [] : user.data.map(item => item.id));
+        setSelected(allSelected ? [] : user?.data.map(item => item.id));
     }
    const handleSelectOne = (id) => {
         setSelected(prev => {
@@ -31,7 +31,7 @@ const Pendaftaran = ({user}) => {
     };
 
     useEffect(() => {
-        if (selected.length === user.data.length) {
+        if (selected.length === user?.data.length) {
             setAllSelected(true);
         } else {
             setAllSelected(false);
@@ -71,22 +71,22 @@ const Pendaftaran = ({user}) => {
                     </thead>
                     <tbody>
                         {user?.data.map((item) => (
-                            <tr key={item.id}>
-                                <td><input type="checkbox" name="pendaftaran" className="checkbox" checked={selected.includes(item.id)} onChange={() => handleSelectOne(item.id)} /></td>
-                                <td>{item.id}</td>
-                                <td>{item.name}</td>
-                                <td>{checkStatus(item.user_detail.status)}</td>
-                                <td>{item.user_detail.tahap}</td>
-                                <td>{item.user_detail.nisn}</td>
-                                <td>{item.user_detail.gender}</td>
-                                <td>{item.user_detail.birth_place}</td>
-                                <td>{new Date(item.user_detail.birth_date).toLocaleDateString('id-ID', { year: 'numeric', month: 'long', day: 'numeric' })}</td>
-                                <td>{item.user_detail.phone}</td>
-                                <td>{item.email}</td>
-                                <td>{item.user_detail.address}</td>
-                                <td>{regencies.find((regency) => regency.id == item.user_detail.city).name}</td>
-                                <td>{provinces.find((province) => province.id == item.user_detail.province).name}</td>
-                                <td><img src={'/storage/' + item.user_detail.photo} alt="photo" className="w-20 object-cover" /></td>
+                            <tr key={item?.id}>
+                                <td><input type="checkbox" name="pendaftaran" className="checkbox" checked={selected.includes(item?.id)} onChange={() => handleSelectOne(item?.id)} /></td>
+                                <td>{item?.id}</td>
+                                <td>{item?.name}</td>
+                                <td>{checkStatus(item?.user_detail?.status)}</td>
+                                <td>{item?.user_detail?.tahap}</td>
+                                <td>{item?.user_detail?.nisn}</td>
+                                <td>{item?.user_detail?.gender}</td>
+                                <td>{item?.user_detail?.birth_place}</td>
+                                <td>{new Date(item?.user_detail?.birth_date).toLocaleDateString('id-ID', { year: 'numeric', month: 'long', day: 'numeric' })}</td>
+                                <td>{item?.user_detail?.phone}</td>
+                                <td>{item?.email}</td>
+                                <td>{item?.user_detail?.address}</td>
+                                <td>{regencies.find((regency) => regency.id == item?.user_detail?.city)?.name}</td>
+                                <td>{provinces.find((province) => province.id == item?.user_detail?.province)?.name}</td>
+                                <td><img src={'/storage/' + item?.user_detail?.photo} alt="photo" className="w-20 object-cover" /></td>
                                 <td>
                                     <button className="btn btn-error btn-xs">Delete</button>
                                 </td>
@@ -97,7 +97,7 @@ const Pendaftaran = ({user}) => {
                 </div>
                 <div className="flex justify-end">
                     {user?.links?.map((link,index) => (
-                        <Link key={index} className={"btn btn-sm" + (link.active ? ' btn-active' : '')} href={link.url || '#'} dangerouslySetInnerHTML={{ __html: link.label}}></Link>
+                        <Link key={index} className={"btn btn-sm" + (link.active ? ' btn-active' : '')} href={link?.url || '#'} dangerouslySetInnerHTML={{ __html: link?.label}}></Link>
                     ))}
                 </div>
             </form>

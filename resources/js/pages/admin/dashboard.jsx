@@ -2,10 +2,10 @@ import AdminLayout from "@/layouts/admin-layout";
 
 const groupBySchoolName = (user) => {
     const grouped = user.reduce((acc, item) => {
-        if (!acc[item.user_detail.school]) {
-            acc[item.user_detail.school] = [];
+        if (!acc[item?.user_detail?.school]) {
+            acc[item?.user_detail?.school] = [];
         }
-        acc[item.user_detail.school].push(item);
+        acc[item?.user_detail?.school].push(item);
         return acc;
     }, {});
     return grouped;
@@ -31,7 +31,7 @@ const Dashboard = ({user}) => {
 
                 <div className="stat place-items-center">
                     <div className="stat-title">Jumlah Calon Siswa Lulus</div>
-                    <div className="stat-value text-secondary">{new Intl.NumberFormat().format(user.filter((item) => item.user_detail.status == '1').length)}</div>
+                    <div className="stat-value text-secondary">{new Intl.NumberFormat().format(user.filter((item) => item?.user_detail?.status == '1').length)}</div>
                     <div className="stat-desc text-secondary">Siswa Lulus</div>
                 </div>
             </div>
