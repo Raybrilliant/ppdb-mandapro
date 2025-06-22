@@ -1,63 +1,26 @@
 import AdminLayout from "@/layouts/admin-layout";
 import Pagination from "@/components/pagination";
 import { useEffect, useState } from "react";
+import { regencies, provinces } from "@/components/geolocation";
+import { Link } from "@inertiajs/react";
 
-const pendaftaran = {
-   total: 50,
-   per_page: 15,
-   current_page: 1,
-   last_page: 4,
-   current_page_url: "http://laravel.app?page=1",
-   first_page_url: "http://laravel.app?page=1",
-   last_page_url: "http://laravel.app?page=4",
-   next_page_url: "http://laravel.app?page=2",
-   prev_page_url: null,
-   path: "http://localhost:8000/admin/pendaftaran",
-   from: 1,
-   to: 15,
-   data:[
-        {
-            id: 1121212121,
-            name: "Raihan Fikri Brilliansyach",
-            nisn: "1234567890",
-            status: "Lolos",
-            tahap: 1,
-            gender: "Laki-laki",
-            birthplace: "Probolinggo",
-            birthdate: "2007-06-14",
-            phone: "081234567890",
-            email: "raihanfikrib@gmail.com",
-            address: "Jl. Probolinggo No. 123",
-            province: "Jawa Timur",
-            city: "Probolinggo",
-            photo: "https://man2kotaprobolinggo.sch.id/wp-content/uploads/2024/11/IMG_20241123_201600.jpg",
-        },
-        {
-            id: 2222222222,
-            name: "Raihan Fikri Brilliansyach",
-            nisn: "1234567890",
-            status: "Tidak Lolos",
-            tahap: 1,
-            gender: "Laki-laki",
-            birthplace: "Probolinggo",
-            birthdate: "2007-06-14",
-            phone: "081234567890",
-            email: "raihanfikrib@gmail.com",
-            address: "Jl. Probolinggo No. 123",
-            province: "Jawa Timur",
-            city: "Probolinggo",
-            photo: "https://man2kotaprobolinggo.sch.id/wp-content/uploads/2024/11/IMG_20241123_201600.jpg",
-        }
-   ]
+const checkStatus = (status) => {
+    switch (status) {
+        case 1:
+            return 'Lolos';
+        case 2:
+            return 'Tidak Lolos';
+        default:
+            return '-';
+    }
 }
-
-const Pendaftaran = () => {
+const Pendaftaran = ({user}) => {
     const [allSelected, setAllSelected] = useState(false);
     const [selected, setSelected] = useState([]);
 
     const handleSelectAll = () => {
         setAllSelected(!allSelected);
-        setSelected(allSelected ? [] : pendaftaran.data.map(item => item.id));
+        setSelected(allSelected ? [] : user.data.map(item => item.id));
     }
    const handleSelectOne = (id) => {
         setSelected(prev => {
@@ -68,7 +31,7 @@ const Pendaftaran = () => {
     };
 
     useEffect(() => {
-        if (selected.length === pendaftaran.data.length) {
+        if (selected.length === user.data.length) {
             setAllSelected(true);
         } else {
             setAllSelected(false);
@@ -107,23 +70,23 @@ const Pendaftaran = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {pendaftaran.data.map((item) => (
+                        {user?.data.map((item) => (
                             <tr key={item.id}>
                                 <td><input type="checkbox" name="pendaftaran" className="checkbox" checked={selected.includes(item.id)} onChange={() => handleSelectOne(item.id)} /></td>
                                 <td>{item.id}</td>
                                 <td>{item.name}</td>
-                                <td>{item.status}</td>
-                                <td>{item.tahap}</td>
-                                <td>{item.nisn}</td>
-                                <td>{item.gender}</td>
-                                <td>{item.birthplace}</td>
-                                <td>{new Date(item.birthdate).toLocaleDateString('id-ID', { year: 'numeric', month: 'long', day: 'numeric' })}</td>
-                                <td>{item.phone}</td>
+                                <td>{checkStatus(item.user_detail.status)}</td>
+                                <td>{item.user_detail.tahap}</td>
+                                <td>{item.user_detail.nisn}</td>
+                                <td>{item.user_detail.gender}</td>
+                                <td>{item.user_detail.birth_place}</td>
+                                <td>{new Date(item.user_detail.birth_date).toLocaleDateString('id-ID', { year: 'numeric', month: 'long', day: 'numeric' })}</td>
+                                <td>{item.user_detail.phone}</td>
                                 <td>{item.email}</td>
-                                <td>{item.address}</td>
-                                <td>{item.city}</td>
-                                <td>{item.province}</td>
-                                <td><img src={item.photo} alt="photo" className="w-20 h-20 object-cover" /></td>
+                                <td>{item.user_detail.address}</td>
+                                <td>{regencies.find((regency) => regency.id == item.user_detail.city).name}</td>
+                                <td>{provinces.find((province) => province.id == item.user_detail.province).name}</td>
+                                <td><img src={'/storage/' + item.user_detail.photo} alt="photo" className="w-20 object-cover" /></td>
                                 <td>
                                     <button className="btn btn-error btn-xs">Delete</button>
                                 </td>
@@ -132,7 +95,11 @@ const Pendaftaran = () => {
                     </tbody>
                 </table>
                 </div>
-                <Pagination total={pendaftaran.total} page={pendaftaran.current_page} url={pendaftaran.path} />
+                <div className="flex justify-end">
+                    {user?.links?.map((link,index) => (
+                        <Link key={index} className={"btn btn-sm" + (link.active ? ' btn-active' : '')} href={link.url || '#'} dangerouslySetInnerHTML={{ __html: link.label}}></Link>
+                    ))}
+                </div>
             </form>
         </div>
     );

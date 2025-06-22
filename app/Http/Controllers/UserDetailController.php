@@ -15,9 +15,24 @@ class UserDetailController extends Controller
      */
     public function index()
     {
-        $user = UserDetail::all()->with('user');
+        $user = User::with('userDetail')->paginate(15);
         return inertia('admin/pendaftaran', [
-            'userDetail' => $user,
+            'user' => $user,
+        ]);
+    }
+
+    public function showBerkas()
+    {
+        $user = User::with('documents')->paginate(15);
+        return inertia('admin/berkas', [
+            'user' => $user,
+        ]);
+    }
+    public function countDashboard()
+    {
+        $user = User::with('userDetail')->get();
+        return inertia('admin/dashboard', [
+            'user' => $user,
         ]);
     }
 

@@ -43,15 +43,9 @@ Route::prefix('dashboard')->group(function () {
 });
 
 Route::prefix('admin')->group(function () {
-    Route::get('/', function () {
-        return inertia('admin/dashboard');
-    });
-    Route::get('/pendaftaran', function () {
-        return inertia('admin/pendaftaran');
-    });
-    Route::get('/berkas', function () {
-        return inertia('admin/berkas');
-    });
+    Route::get('/', [UserDetailController::class, 'countDashboard']);
+    Route::get('/pendaftaran', [UserDetailController::class, 'index']);
+    Route::get('/berkas', [UserDetailController::class, 'showBerkas']);
     Route::get('/setting', function () {
         return inertia('admin/setting');
     });

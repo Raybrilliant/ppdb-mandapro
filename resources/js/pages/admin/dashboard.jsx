@@ -1,28 +1,39 @@
 import AdminLayout from "@/layouts/admin-layout";
 
-const Dashboard = () => {
+const groupBySchoolName = (user) => {
+    const grouped = user.reduce((acc, item) => {
+        if (!acc[item.user_detail.school]) {
+            acc[item.user_detail.school] = [];
+        }
+        acc[item.user_detail.school].push(item);
+        return acc;
+    }, {});
+    return grouped;
+}
+
+const sortedMostRegiterSchool = (user) => {
+    const grouped = groupBySchoolName(user);
+    const sorted = Object.entries(grouped).sort((a, b) => b[1].length - a[1].length);
+    return sorted;
+}
+const Dashboard = ({user}) => {
+    console.log(sortedMostRegiterSchool(user));
     return (
         <div className="space-y-4">
             <h1 className="text-2xl font-bold">Dashboard</h1>
             {/* Statistics */}
             <div className="stats shadow-xl w-full">
-            <div className="stat place-items-center">
-                <div className="stat-title">Jumlah Pendaftar</div>
-                <div className="stat-value">{new Intl.NumberFormat().format(1000)}</div>
-                <div className="stat-desc">↗︎ 40 (2%)</div>
-            </div>
+                <div className="stat place-items-center">
+                    <div className="stat-title">Jumlah Pendaftar</div>
+                    <div className="stat-value">{new Intl.NumberFormat().format(user.length)}</div>
+                    <div className="stat-desc">Siswa Baru</div>
+                </div>
 
-            <div className="stat place-items-center">
-                <div className="stat-title">Jumlah Siswa Lulus</div>
-                <div className="stat-value text-secondary">{new Intl.NumberFormat().format(300)}</div>
-                <div className="stat-desc text-secondary">↘︎ 40 (2%)</div>
-            </div>
-
-            <div className="stat place-items-center">
-                <div className="stat-title">Jumlah Siswa Lulus</div>
-                <div className="stat-value">{new Intl.NumberFormat().format(1200)}</div>
-                <div className="stat-desc">↘︎ 90 (14%)</div>
-            </div>
+                <div className="stat place-items-center">
+                    <div className="stat-title">Jumlah Calon Siswa Lulus</div>
+                    <div className="stat-value text-secondary">{new Intl.NumberFormat().format(user.filter((item) => item.user_detail.status == '1').length)}</div>
+                    <div className="stat-desc text-secondary">Siswa Lulus</div>
+                </div>
             </div>
             {/* Table */}
             <div className="overflow-x-auto">
@@ -35,11 +46,13 @@ const Dashboard = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>MAN 2 Kota Probolinggo</td>
-                            <td>{new Intl.NumberFormat().format(1000)}</td>
-                        </tr>
+                        {sortedMostRegiterSchool(user).map((item,index) => (
+                            <tr key={index}>
+                                <td>{index + 1}</td>
+                                <td>{item[0]}</td>
+                                <td>{new Intl.NumberFormat().format(item[1].length)}</td>
+                            </tr>
+                        ))}
                     </tbody>
                 </table>
             </div>
