@@ -22,6 +22,7 @@ class User extends Authenticatable
         'email',
         'password',
         'role',
+        'type',
     ];
 
     /**
@@ -61,7 +62,7 @@ class User extends Authenticatable
     }
     public function achievements()
     {
-        return $this->hasMany(Achievements::class);
+        return $this->hasOne(Achievements::class);
     }
     public function parents()
     {

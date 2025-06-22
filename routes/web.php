@@ -11,6 +11,7 @@ use App\Http\Controllers\LevelsController;
 use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\SubjectsController;
 use App\Http\Controllers\FAQsController;
+use App\Http\Controllers\AchievementsController;
 use App\Http\Controllers\LandingPagesController;
 
 Route::get('/', [LandingPagesController::class, 'index']);
@@ -24,6 +25,12 @@ Route::get('/register', function () {
 });
 
 Route::prefix('dashboard')->group(function () {
+    // Validasi
+    Route::put('/validate/{id}', [UserDetailController::class, 'updateValidate']);
+    
+    // Prestasi
+    Route::post('/profile/achievement', [AchievementsController::class, 'store']);
+    Route::put('/profile/achievement/{id}', [AchievementsController::class, 'update']);
 
     // Orang Tua
     Route::post('/profile/parents', [ParentsController::class, 'store']);
@@ -49,6 +56,9 @@ Route::prefix('dashboard')->group(function () {
 Route::prefix('admin')->group(function () {
     Route::get('/', [UserDetailController::class, 'countDashboard']);
     Route::get('/pendaftaran', [UserDetailController::class, 'index']);
+    Route::put('/pendaftaran/bulk/lolos', [UserDetailController::class, 'updateBulkLolos']);
+    Route::put('/pendaftaran/bulk/tidak-lolos', [UserDetailController::class, 'updateBulkTidakLolos']);
+    Route::delete('/pendaftaran/bulk/hapus', [UserDetailController::class, 'destroy']);
     Route::get('/berkas', [UserDetailController::class, 'showBerkas']);
     Route::prefix('/setting')->group(function () {
         Route::get('/', [SettingsController::class, 'index']);

@@ -53,13 +53,16 @@ function Profile({user,mapel}) {
             5:{},
         },
 
+        // Data Prestasi
+        achievement:user?.achievements?.name,
+        achievement_type:user?.achievements?.level,
+        achievement_year:user?.achievements?.year,
+
         // Data Dokumen
         raport:null,
         kartu_keluarga:null,
         sertifikat_lomba:null,
     });
-
-    console.log(data);
     
     // Input Data Diri
     const handleSubmitProfile = (e) => {
@@ -71,7 +74,7 @@ function Profile({user,mapel}) {
             },
         });
     } else {
-        post('/dashboard/profile',{
+        post('/dashboard/profile/create',{
             onSuccess: () => {
                 alert('Data berhasil disimpan');
             },
@@ -108,6 +111,22 @@ const handleSubmitRaport = (e) => {
         });
     } else {
         post('/dashboard/profile/reports',{onSuccess: () => {
+            alert('Data berhasil disimpan');
+        }});
+    }
+}
+
+// Input Data Prestasi
+const handleSubmitPrestasi = (e) => {
+    e.preventDefault();
+    if (user?.achievement?.id) {
+        put('/dashboard/profile/achievement/' + user?.achievement?.id,{
+            onSuccess: () => {
+                alert('Data berhasil disimpan');
+            },
+        });
+    } else {
+        post('/dashboard/profile/achievement',{onSuccess: () => {
             alert('Data berhasil disimpan');
         }});
     }
@@ -411,6 +430,40 @@ const handleSubmitDocument = (e) => {
                     </form>
                 </div>
             </section>
+            {/* Prestasi */}
+            {user?.type === 'prestasi' && (
+            <section className="card outline outline-black my-10">
+                <div className="p-5">
+                    <h1 className="text-xl font-bold mb-5">Prestasi</h1>
+                    <form onSubmit={handleSubmitPrestasi}>
+                        <div className="grid grid-cols-3 gap-5">
+                            <div>
+                                <label htmlFor="achievement">Prestasi</label>
+                                <input type="text" id="achievement" name="achievement" defaultValue={data.achievement} onChange={(e) => setData('achievement', e.target.value)} className="input input-bordered w-full" required  />
+                            </div>
+                            <div>
+                                <label htmlFor="achievement_type">Tingkat</label>
+                                <select id="achievement_type" name="achievement_type" defaultValue={data.achievement_type} onChange={(e) => setData('achievement_type', e.target.value)} className="select select-bordered w-full" required>
+                                    <option disabled selected>Pilih Tingkat</option>
+                                    <option value="nasional">Nasional</option>
+                                    <option value="provinsi">Provinsi</option>
+                                    <option value="kota/kabupaten">Kota/Kabupaten</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label htmlFor="achievement_year">Tahun Prestasi</label>
+                                <input type="number" id="achievement_year" name="achievement_year" defaultValue={data.achievement_year} onChange={(e) => setData('achievement_year', e.target.value)} className="input input-bordered w-full" required />
+                            </div>
+                        </div>
+                        <div className="flex justify-end">
+                            <button type="submit" className="btn bg-emerald-600 text-white px-10 rounded-full mt-5" disabled={processing}>
+                                {processing ? 'Proses...' : 'Simpan'}
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </section>
+            )}
             {/* Upload Dokumen */}
             <section className="card outline outline-black my-10">
                 <div className="p-5">
@@ -427,11 +480,13 @@ const handleSubmitDocument = (e) => {
                                 <input type="file" id="kartu_keluarga" name="kartu_keluarga" accept="application/pdf" onChange={(e) => setData('kartu_keluarga', e.target.files[0])} className="file-input file-input-bordered w-full" />
                                 <p className="text-sm text-gray-500">Format file: PDF, Max. 5MB</p>
                             </div>
+                            {user.type === 'prestasi' && (
                             <div>
-                                <label htmlFor="sertifikat_lomba">Sertifikat Lomba (Jika Ada)</label>
+                                <label htmlFor="sertifikat_lomba">Sertifikat Lomba</label>
                                 <input type="file" id="sertifikat_lomba" name="sertifikat_lomba" accept="application/pdf" onChange={(e) => setData('sertifikat_lomba', e.target.files[0])} className="file-input file-input-bordered w-full" />
                                 <p className="text-sm text-gray-500">File dijadikan 1 PDF</p>
                             </div>
+                            )}
                         </div>
                         <div className="flex justify-end">
                             <button type="submit" className="btn bg-emerald-600 text-white px-10 rounded-full mt-5" disabled={processing}>{processing ? 'Proses...' : 'Simpan'}</button>

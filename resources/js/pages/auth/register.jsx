@@ -18,6 +18,16 @@ function Register() {
                         </div>
                         <div className="form-control">
                             <label className="label">
+                                <span className="label-text">Jalur Pendaftaran</span>
+                            </label>
+                            <select className="select select-bordered w-full">
+                                <option disabled selected>Pilih Jalur Pendaftaran</option>
+                                <option value="prestasi">Prestasi</option>
+                                <option value="reguler">Reguler</option>
+                            </select>
+                        </div>
+                        <div className="form-control">
+                            <label className="label">
                                 <span className="label-text">Email</span>
                             </label>
                             <input type="email" placeholder="email" className="input input-bordered w-full" />

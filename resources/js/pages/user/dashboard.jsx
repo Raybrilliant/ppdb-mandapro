@@ -4,46 +4,10 @@ import { useForm } from "@inertiajs/react";
 import { useEffect, useState } from "react";
 import { regencies, provinces } from "@/components/geolocation";
 
-const prestasi = [
-    {
-        title: 'Juara 1 Olimpiade Matematika',
-        type: 'Nasional',
-        year: 2024,
-    },
-    {
-        title: 'Juara 2 Olimpiade Bahasa Indonesia',
-        type: 'Nasional',
-        year: 2024,
-    },
-    {
-        title: 'Juara 3 Olimpiade Bahasa Inggris',
-        type: 'Nasional',
-        year: 2024,
-    },
-]
-
-const tahap = [
-    {
-        id: 1,
-        tahap: 1,
-        name: "Verifikasi Berkas",
-    },
-    {
-        id: 2,
-        tahap: 2,
-        name: "Seleksi Online",
-    },
-    {
-        id: 3,
-        tahap: 3,
-        name: "Seleksi Offline",
-    },
-]
-
-function Dashboard({user,mapel}) {
+function Dashboard({user,mapel,tahap,announcement}) {
     console.log(user);
     const [lengkap, setLengkap] = useState(false);
-    const {data, setData} = useForm({
+    const {data, setData, put, processing} = useForm({
         grades: {
             1:{},
             2:{},
@@ -53,7 +17,16 @@ function Dashboard({user,mapel}) {
         },
     });
 
-    console.log(data);
+    const makeArrayFromLevel = () => {
+        const levelArray = [];
+        tahap.forEach(tahap => {
+            levelArray.push({
+                id: tahap.id,
+                name: tahap.name,
+            });
+        });
+        return levelArray;
+    }
 
     // This useEffect populates the `data.grades` state initially
     useEffect(() => {
@@ -81,19 +54,46 @@ function Dashboard({user,mapel}) {
             setData('grades', initialGrades);
         }
 
-        if (user.user_detail && user.parents && user.reports && user.documents) {
-            setLengkap(true);
+        if (user.type == 'prestasi') {
+            if (user.user_detail && user.parents && user.reports.length > 0 && user.documents && user.achievements) {
+                setLengkap(true);
+            } else {
+                setLengkap(false);
+            }
+        } else {
+            if (user.user_detail && user.parents && user.reports.length > 0 && user.documents) {
+                setLengkap(true);
+            } else {
+                setLengkap(false);
+            }
         }
 
     }, [user]);
+
+    const handleValidate = () => {
+        if (!lengkap) {
+            alert('Data tidak lengkap');
+            return;
+        }
+        put('/dashboard/validate/' + user.user_detail.id, {
+            onSuccess: () => {
+                alert('Data berhasil Dikirim');
+            },
+        });
+    }
+
+    console.log(announcement);
+    
    
     return (
         <div>
             {/* Pengumuman */}
-            <div className="alert alert-warning text-center">
-                <p className="text-sm font-semibold">Pengumuman |</p>
-                <p>Pengumpulan berkas dapat dilakukan di MAN 2 Kota Probolinggo mulai tanggal <span className="font-bold">10-12 Juli 2025 Pukul 08.00 - 11.30 WIB</span></p>
-            </div>
+            {announcement.map((item, index) => (
+                    <div className="alert alert-warning text-center my-2" key={index}>
+                        <p className="text-sm font-semibold">Pengumuman |</p>
+                        <p>{item?.content}</p>
+                    </div>
+                ))}
             <h1 className="text-2xl font-bold my-10">Detail Pendaftar</h1>
             <div className=" card outline outline-black my-10">
                 <div className="p-5">
@@ -106,7 +106,11 @@ function Dashboard({user,mapel}) {
                                     <p className="text-sm font-semibold opacity-50">No Pendaftaran : {user?.id}</p>
                                     <p className="text-sm font-semibold opacity-50">Status : {lengkap ? <span className="text-green-600 font-bold">Lengkap</span> : <span className="text-red-600 font-bold">Belum Lengkap</span>}</p>
                                 </div>
-                                <Link href="/dashboard/profile/edit/1" className="btn btn-accent ">{lengkap ? 'Ubah Profil' : 'Lengkapi Profil'}</Link>
+                                <div className="flex items-center gap-2">
+                                    <Link href="/dashboard/profile/edit/1" className="btn btn-accent " disabled={user?.user_detail?.validated}>{lengkap ? 'Ubah Profil' : 'Lengkapi Profil'}</Link>
+                                    <button className="btn btn-warning" onClick={handleValidate} disabled={processing || user?.user_detail?.validated}>{processing ? 'Sedang Mengirim..' : 'Kirim Validasi'}</button>
+                                </div>
+                                <div className="alert alert-warning"><b>Perhatian !</b> Setelah mengirim validasi, data tidak dapat diubah lagi !</div>
                             </div>
                         </div>
                     </div>
@@ -132,7 +136,7 @@ function Dashboard({user,mapel}) {
                             <hr />
                             <div className="flex items-center justify-between">
                                 <p>Jenis Kelamin</p>
-                                <p>{user?.user_detail?.gender}</p>
+                                <p className="capitalize">{user?.user_detail?.gender}</p>
                             </div>
                             <hr />
                             <div className="flex items-center justify-between">
@@ -202,7 +206,7 @@ function Dashboard({user,mapel}) {
                     </div>
                 </div>
             </div>
-            {/* Raport & Prestasi */}
+            {/* Raport */}
             <div className="card outline outline-black my-10">
                 <div className="p-5">
                     <h2 className="card-title">Raport</h2>
@@ -250,25 +254,25 @@ function Dashboard({user,mapel}) {
                             ))}
                         </tbody>
                     </table>
+                    {/* Prestasi */}
                     <h2 className="card-title mt-5">Prestasi</h2>
-                    <table className="table table-zebra">
-                        <thead>
-                            <tr>
-                                <th>Tingkat</th>
-                                <th>Prestasi</th>
-                                <th>Tahun</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {prestasi.map((prestasi, index) => (
-                                <tr key={index}>
-                                    <td>{prestasi.type}</td>
-                                    <td>{prestasi.title}</td>
-                                    <td>{prestasi.year}</td>
+                    {user.achievements ? (
+                        <table className="table table-zebra">
+                            <thead>
+                                <tr>
+                                    <th>Tingkat</th>
+                                    <th>Prestasi</th>
+                                    <th>Tahun</th>
                                 </tr>
-                            ))}
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td className="capitalize">{user?.achievements?.level}</td>
+                                    <td className="capitalize">{user?.achievements?.name}</td>
+                                    <td>{user?.achievements?.year}</td>
+                                </tr>
+                            </tbody>
+                        </table>):(<p>Tidak ada prestasi</p>)}
                 </div>
             </div>
             {/* Progress */}
@@ -277,17 +281,17 @@ function Dashboard({user,mapel}) {
                     <h2 className="card-title">Progress Pendaftaran</h2>
                     <ul className="steps w-full">
                         {tahap.map((item) => (
-                            <li key={item.id} className={"step" + (item.id <= user?.user_detail?.tahap ? " step-neutral" : "")}>{item.name}</li>
+                            <li key={item.id} className={"step" + (item.id <= makeArrayFromLevel().find((item, index) => index == user?.user_detail?.tahap)?.id ? "" : " step-neutral")}>{item.name}</li>
                         ))}
                     </ul>
                     {user?.user_detail?.status == 2 ? (
                         <div role="alert" className="alert alert-error mt-5">
-                            <span>Mohon Maaf ! <span className="font-bold">{user?.name}</span> Anda tidak lolos Tahap {tahap?.find((item) => item.id === user?.user_detail?.tahap)?.name} dengan alasan {user?.user_detail?.message}</span>
+                            <span>Mohon Maaf ! <span className="font-bold">{user?.name}</span> Anda tidak lolos Tahap {makeArrayFromLevel().find((item, index) => index == user?.user_detail?.tahap-1)?.name} dengan alasan {user?.user_detail?.message}</span>
                         </div>
                     ) : (
                         user?.user_detail?.status == 1 ? (
                             <div role="alert" className="alert alert-success mt-5">
-                                <span>Selamat ! <span className="font-bold">{user?.name}</span> Anda berhasil lolos {tahap?.find((item) => item.id === user?.user_detail?.tahap)?.name}</span>
+                                <span>Selamat ! <span className="font-bold">{user?.name}</span> Anda berhasil lolos {makeArrayFromLevel().find((item, index) => index == user?.user_detail?.tahap-1)?.name}</span>
                             </div>
                         ) : null
                     )}

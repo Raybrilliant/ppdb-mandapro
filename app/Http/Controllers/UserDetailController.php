@@ -7,6 +7,9 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Subjects;
+use App\Models\Achievements;
+use App\Models\Level;
+use App\Models\Announcement;
 
 class UserDetailController extends Controller
 {
@@ -91,11 +94,15 @@ class UserDetailController extends Controller
      */
     public function show(string $id)
     {
-        $user = User::find($id)->with('userDetail','parents','reports','documents')->first();
+        $user = User::find($id)->with('userDetail','parents','reports','documents','achievements')->first();
         $mapel = Subjects::all();
+        $tahap = Level::all()->sortBy('created_at', SORT_REGULAR, true);
+        $announcement = Announcement::all();
         return inertia('user/dashboard', [
             'user' => $user,
             'mapel' => $mapel,
+            'tahap' => $tahap,
+            'announcement' => $announcement,
         ]);
     }
 
@@ -104,7 +111,7 @@ class UserDetailController extends Controller
      */
     public function edit(string $id)
     {
-        $user = User::find($id)->with('userDetail','parents','reports','documents')->first();
+        $user = User::find($id)->with('userDetail','parents','reports','documents','achievements')->first();
         $mapel = Subjects::all();
         return inertia('user/profile', [
             'user' => $user,
@@ -164,11 +171,86 @@ class UserDetailController extends Controller
         return back();
     }
 
+    // Update Bulk User
+    public function updateBulkLolos(Request $request)
+    {
+        $tahap = Level::all();
+        $users = $request->users;
+        foreach ($users as $user) {
+            $user = UserDetail::find($user);
+            if($user->tahap <= $tahap->count()) {
+                $user->update([
+                    'status' => 1,
+                    'tahap' => $user->tahap+1,
+                    'message' => null,
+                ]);
+            } else {
+                $user->update([
+                    'status' => 1,
+                    'message' => null,
+                ]);
+            }
+        }
+        return back();
+    }
+
+    public function updateBulkTidakLolos(Request $request)
+    {
+        $tahap = Level::all();
+        $users = $request->users;
+        foreach ($users as $user) {
+            $user = UserDetail::find($user);
+            if($user->tahap <= $tahap->count()) {
+                $user->update([
+                    'status' => 2,
+                    'tahap' => $user->tahap+1,
+                    'message' => $request->message,
+                ]); 
+            } else {
+                $user->update([
+                    'status' => 2,
+                    'message' => $request->message,
+                ]);
+            }
+        }
+        return back();
+    }
+
+    public function updateValidate(Request $request, string $id)
+    {
+        $data = [
+            'validated' => true,
+        ];
+        UserDetail::find($id)->update($data);
+        return back();
+    }
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Request $request)
     {
-        //
+        $users = $request->users;
+        foreach ($users as $user) {
+            $detail = UserDetail::find($user)->user_id;
+            $user = User::find($detail)->with('userDetail','documents')->first();
+            if($user->userDetail->photo) {
+                $oldPhotoRelativePath = str_replace('/storage/', '', $user->userDetail->photo);
+                Storage::disk('public')->delete($oldPhotoRelativePath);
+            }
+            if($user->documents?->kartu_keluarga) {
+                $oldKartuKeluargaRelativePath = str_replace('/storage/', '', $user->documents->kartu_keluarga);
+                Storage::disk('public')->delete($oldKartuKeluargaRelativePath);
+            }
+            if($user->documents?->raport) {
+                $oldRaportRelativePath = str_replace('/storage/', '', $user->documents->raport);
+                Storage::disk('public')->delete($oldRaportRelativePath);
+            }
+            if($user->documents?->sertifikat_lomba) {
+                $oldSertifikatLombaRelativePath = str_replace('/storage/', '', $user->documents->sertifikat_lomba);
+                Storage::disk('public')->delete($oldSertifikatLombaRelativePath);
+            }
+            $user->delete();
+        }
+        return back();
     }
 }

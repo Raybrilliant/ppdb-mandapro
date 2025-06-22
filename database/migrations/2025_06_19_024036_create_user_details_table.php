@@ -25,6 +25,7 @@ return new class extends Migration
             $table->string('village');
             $table->string('school');
             $table->integer('status')->default(0);
+            $table->boolean('validated')->default(false);
             $table->integer('tahap')->default(1);
             $table->string('message')->nullable();
             $table->string('photo')->nullable();
