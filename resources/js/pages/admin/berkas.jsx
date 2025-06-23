@@ -16,7 +16,6 @@ const Berkas = ({user}) => {
                             <th>Kartu Keluarga</th>
                             <th>Raport</th>
                             <th>Sertifikat Lomba</th>
-                            <th>Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -28,9 +27,6 @@ const Berkas = ({user}) => {
                                 <td><a href={'/storage/' + item?.documents?.kartu_keluarga} disabled={!item?.documents?.kartu_keluarga} className="btn btn-xs btn-info" target="_blank" rel="noopener noreferrer">Lihat</a></td>
                                 <td><a href={'/storage/' + item?.documents?.raport} disabled={!item?.documents?.raport} className="btn btn-xs btn-info" target="_blank" rel="noopener noreferrer">Lihat</a></td>
                                 <td><a href={'/storage/' + item?.documents?.sertifikat_lomba} disabled={!item?.documents?.sertifikat_lomba} className="btn btn-xs btn-info" target="_blank" rel="noopener noreferrer">Lihat</a></td>
-                                <td>
-                                    <button className="btn btn-error btn-xs">Delete</button>
-                                </td>
                             </tr>
                         ))}
                     </tbody>

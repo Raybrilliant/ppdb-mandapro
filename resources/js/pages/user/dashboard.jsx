@@ -4,8 +4,8 @@ import { useForm } from "@inertiajs/react";
 import { useEffect, useState } from "react";
 import { regencies, provinces } from "@/components/geolocation";
 
-function Dashboard({user,mapel,tahap,announcement}) {
-    console.log(user);
+function Dashboard({user,mapel,tahap}) {
+    console.log(tahap);
     const [lengkap, setLengkap] = useState(false);
     const {data, setData, put, processing} = useForm({
         grades: {
@@ -16,17 +16,6 @@ function Dashboard({user,mapel,tahap,announcement}) {
             5:{},
         },
     });
-
-    const makeArrayFromLevel = () => {
-        const levelArray = [];
-        tahap.forEach(tahap => {
-            levelArray.push({
-                id: tahap.id,
-                name: tahap.name,
-            });
-        });
-        return levelArray;
-    }
 
     // This useEffect populates the `data.grades` state initially
     useEffect(() => {
@@ -82,18 +71,29 @@ function Dashboard({user,mapel,tahap,announcement}) {
         });
     }
 
-    console.log(announcement);
-    
-   
+    const announcement = (tahap) => {
+
+        let announcement = null;
+        tahap.map((item) => {
+            if (!item?.announcement) {
+                return null;
+            }
+            if (item.level == user?.user_detail?.tahap) {
+                announcement = (
+                    <div className="alert alert-warning text-center my-2" key={item?.announcement?.id}>
+                        <p className="text-sm font-semibold">Pengumuman |</p>
+                        <p>{item?.announcement?.content}</p>
+                    </div>
+                )
+            }
+        })
+        return announcement;
+    }
+
     return (
         <div>
             {/* Pengumuman */}
-            {announcement.map((item, index) => (
-                    <div className="alert alert-warning text-center my-2" key={index}>
-                        <p className="text-sm font-semibold">Pengumuman |</p>
-                        <p>{item?.content}</p>
-                    </div>
-                ))}
+            {announcement(tahap)}
             <h1 className="text-2xl font-bold my-10">Detail Pendaftar</h1>
             <div className=" card outline outline-black my-10">
                 <div className="p-5">
@@ -110,7 +110,7 @@ function Dashboard({user,mapel,tahap,announcement}) {
                                     <Link href="/dashboard/profile/edit/1" className="btn btn-accent " disabled={user?.user_detail?.validated}>{lengkap ? 'Ubah Profil' : 'Lengkapi Profil'}</Link>
                                     <button className="btn btn-warning" onClick={handleValidate} disabled={processing || user?.user_detail?.validated}>{processing ? 'Sedang Mengirim..' : 'Kirim Validasi'}</button>
                                 </div>
-                                <div className="alert alert-warning"><b>Perhatian !</b> Setelah mengirim validasi, data tidak dapat diubah lagi !</div>
+                                <div className="alert alert-warning"><b>Perhatian !</b> Jika status sudah lengkap maka silahkan kirim validasi. Setelah mengirim validasi, data tidak dapat diubah lagi !</div>
                             </div>
                         </div>
                     </div>
@@ -280,18 +280,18 @@ function Dashboard({user,mapel,tahap,announcement}) {
                 <div className="p-5">
                     <h2 className="card-title">Progress Pendaftaran</h2>
                     <ul className="steps w-full">
-                        {tahap.map((item) => (
-                            <li key={item.id} className={"step" + (item.id <= makeArrayFromLevel().find((item, index) => index == user?.user_detail?.tahap)?.id ? "" : " step-neutral")}>{item.name}</li>
+                        {tahap?.map((item) => (
+                            <li key={item.id} className={"step" + (item.level <= user?.user_detail?.tahap ? " step-neutral" : "")}>{item.name}</li>
                         ))}
                     </ul>
                     {user?.user_detail?.status == 2 ? (
                         <div role="alert" className="alert alert-error mt-5">
-                            <span>Mohon Maaf ! <span className="font-bold">{user?.name}</span> Anda tidak lolos Tahap {makeArrayFromLevel().find((item, index) => index == user?.user_detail?.tahap-1)?.name} dengan alasan {user?.user_detail?.message}</span>
+                            <span>Mohon Maaf ! <span className="font-bold">{user?.name}</span> Anda tidak lolos Tahap {tahap.find((item) => item.level == user?.user_detail?.tahap)?.name} dengan alasan {user?.user_detail?.message}</span>
                         </div>
                     ) : (
                         user?.user_detail?.status == 1 ? (
                             <div role="alert" className="alert alert-success mt-5">
-                                <span>Selamat ! <span className="font-bold">{user?.name}</span> Anda berhasil lolos {makeArrayFromLevel().find((item, index) => index == user?.user_detail?.tahap-1)?.name}</span>
+                                <span>Selamat ! <span className="font-bold">{user?.name}</span> Anda berhasil lolos {tahap.find((item) => item.level == user?.user_detail?.tahap)?.name}</span>
                             </div>
                         ) : null
                     )}

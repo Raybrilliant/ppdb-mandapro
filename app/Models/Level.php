@@ -8,6 +8,7 @@ class Level extends Model
 {
     protected $fillable = [
         'name',
+        'level',
     ];
 
     public function announcement()

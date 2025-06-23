@@ -4,6 +4,7 @@ import { useForm } from "@inertiajs/react";
 const Tahapan = ({ level }) => {
     const {data, setData, processing, post, put, delete: del} = useForm({
         name: level?.name,
+        level: level?.level,
     });
 
     const handleSubmit = (e) => {
@@ -41,6 +42,10 @@ const Tahapan = ({ level }) => {
                 <div className="floating-label">
                     <span>Nama</span>
                     <input type="text" className="input input-bordered w-full" value={data.name} onChange={(e) => setData('name', e.target.value)} name="name" placeholder="Nama" required/>
+                </div>
+                <div className="floating-label">
+                    <span>Tahap</span>
+                    <input type="number" className="input input-bordered w-full" value={data.level} onChange={(e) => setData('level', e.target.value)} name="level" placeholder="Tahap" required/>
                 </div>
                 <button type="submit" className="btn btn-primary" disabled={processing}>{processing ? 'Processing...' : 'Simpan'}</button>
             </form>

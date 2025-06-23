@@ -96,13 +96,11 @@ class UserDetailController extends Controller
     {
         $user = User::find($id)->with('userDetail','parents','reports','documents','achievements')->first();
         $mapel = Subjects::all();
-        $tahap = Level::all()->sortBy('created_at', SORT_REGULAR, true);
-        $announcement = Announcement::all();
+        $tahap = Level::with('announcement')->get();
         return inertia('user/dashboard', [
             'user' => $user,
             'mapel' => $mapel,
             'tahap' => $tahap,
-            'announcement' => $announcement,
         ]);
     }
 

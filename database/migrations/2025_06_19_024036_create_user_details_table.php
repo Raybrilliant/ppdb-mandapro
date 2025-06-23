@@ -26,7 +26,7 @@ return new class extends Migration
             $table->string('school');
             $table->integer('status')->default(0);
             $table->boolean('validated')->default(false);
-            $table->integer('tahap')->default(1);
+            $table->integer('tahap')->default(0);
             $table->string('message')->nullable();
             $table->string('photo')->nullable();
             $table->unsignedBigInteger('user_id');

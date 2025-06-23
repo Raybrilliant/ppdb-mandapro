@@ -2,33 +2,37 @@ import AdminLayout from "@/layouts/admin-layout";
 import { Link } from "@inertiajs/react";
 import { Plus } from "lucide-react";
 
-const testimoni = [
-    {
-        id: 1,
-        name: "Raihan Fikri Brilliansyach",
-        description: "Sekolah yang bagus",
-    },
-]
-const program = [
-    {
-        id: 1,
-        name: "Program A",
-        description: "Siswa yang lolos asadadas asdasd ",
-    }
-]
-const faq = [
-    {
-        id: 1,
-        question: "Apakah orangtua dapat mengajukan pendaftaran ulang?",
-        answer: "Siswa yang lolos dapat melakukan pendaftaraan ulang melalui link berikut https://man2kotaprobolinggo.sch.id/pendaftaran",
-    }
-]
-const Setting = ({levels, testimonis, programs, faqs, subjects}) => {
-    console.log(levels);
-    
+const Setting = ({levels,faqs,subjects}) => {
     return (
         <div className="space-y-4">
             <h1 className="text-2xl font-semibold">Setting</h1>
+            {/* Tahap */}
+            <div className="flex justify-between items-center">
+                <h2 className="text-xl font-semibold">Tahap</h2>
+                <Link href="/admin/setting/tahapan" className="btn btn-neutral btn-sm"><Plus/> Tambah Tahap</Link>
+            </div>
+            <div className="overflow-x-auto">
+                <table className="table table-zebra">
+
+                <thead>
+                    <tr>
+                        <th>Tahap</th>
+                        <th>Nama</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {levels.map((item) => (
+                        <tr key={item.id}>
+                            <td>{item.level}</td>
+                            <td className="w-1/2">{item.name}</td>
+                            <td><Link href={`/admin/setting/tahapan/${item.id}`} className="btn btn-warning btn-xs">Edit</Link></td>
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
+            </div>
+            <hr />
             {/* Pengumuman */}
             <div className="flex justify-between items-center">
                 <h2 className="text-xl font-semibold">Pengumuman</h2>
@@ -46,42 +50,15 @@ const Setting = ({levels, testimonis, programs, faqs, subjects}) => {
                     </tr>
                 </thead>
                 <tbody>
-                    {levels.map((item, index) => (
+                    {levels.map((item) => (
                         item.announcement ? (
                             <tr key={item.announcement?.id}>
-                                <td>{index + 1}</td>
+                                <td>{item.level}</td>
                                 <td className="w-1/2">{item.announcement?.content}</td>
                                 <td>{ item.name}</td>
                                 <td><Link href={`/admin/setting/pengumuman/${item.announcement?.id}`} className="btn btn-warning btn-xs">Edit</Link></td>
                             </tr>
                         ) : null
-                    ))}
-                </tbody>
-            </table>
-            </div>
-            <hr />
-            {/* Tahap */}
-            <div className="flex justify-between items-center">
-                <h2 className="text-xl font-semibold">Tahap</h2>
-                <Link href="/admin/setting/tahapan" className="btn btn-neutral btn-sm"><Plus/> Tambah Tahap</Link>
-            </div>
-            <div className="overflow-x-auto">
-                <table className="table table-zebra">
-
-                <thead>
-                    <tr>
-                        <th>No</th>
-                        <th>Nama</th>
-                        <th>Aksi</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {levels.map((item, index) => (
-                        <tr key={index}>
-                            <td>{index + 1}</td>
-                            <td className="w-1/2">{item.name}</td>
-                            <td><Link href={`/admin/setting/tahapan/${item.id}`} className="btn btn-warning btn-xs">Edit</Link></td>
-                        </tr>
                     ))}
                 </tbody>
             </table>

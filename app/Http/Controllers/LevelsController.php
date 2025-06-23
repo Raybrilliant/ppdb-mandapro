@@ -23,10 +23,12 @@ class LevelsController extends Controller
     {
         $request->validate([
             'name' => 'required',
+            'level' => 'required',
         ]);
 
         $data = [
             'name' => $request->name,
+            'level' => $request->level,
         ];
         Level::create($data);
 
@@ -51,10 +53,12 @@ class LevelsController extends Controller
     {
         $request->validate([
             'name' => 'required',
+            'level' => 'required',
         ]);
 
         $data = [
             'name' => $request->name,
+            'level' => $request->level,
         ];
         Level::find($id)->update($data);
 
