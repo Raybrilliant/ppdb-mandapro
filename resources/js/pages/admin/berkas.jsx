@@ -5,7 +5,10 @@ const Berkas = ({user}) => {
     return (
         <div className="space-y-4">
             <h1 className="text-2xl font-semibold">Berkas</h1>
-            <input type="search" placeholder="Search" className="input input-bordered w-full rounded-full" />
+            <form className="flex items-center gap-2">
+                <input type="search" placeholder="Cari Nama / No Pendaftaran" name="s" className="input input-bordered w-full rounded-full" />
+                <button type="submit" className="btn btn-primary rounded-full">Cari</button>
+            </form>
             <div className="overflow-x-auto">
                 <table className="table table-zebra text-sm mb-5">
                     <thead>
@@ -21,7 +24,7 @@ const Berkas = ({user}) => {
                     <tbody>
                         {user?.data.map((item, index) => (
                             <tr key={index}>
-                                <td>{item?.id}</td>
+                                <td>{item?.nomor_pendaftaran}</td>
                                 <td>{item?.name}</td>
                                 <td>{new Date(item?.created_at).toLocaleDateString('id-ID', { year: 'numeric', month: 'long', day: 'numeric' })}</td>
                                 <td><a href={'/storage/' + item?.documents?.kartu_keluarga} disabled={!item?.documents?.kartu_keluarga} className="btn btn-xs btn-info" target="_blank" rel="noopener noreferrer">Lihat</a></td>

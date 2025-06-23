@@ -48,6 +48,17 @@ class User extends Authenticatable
         ];
     }
 
+    protected $appends = ['nomor_pendaftaran']; 
+
+    public function getNomorPendaftaranAttribute(): string
+{
+    $prefix = 'REG';
+    $year = now()->year;
+    $paddedId = str_pad($this->id, 6, '0', STR_PAD_LEFT);
+
+    return "{$prefix}-{$year}-{$paddedId}";
+}
+
     public function detail()
     {
         return $this->belongsTo(UserDetail::class);

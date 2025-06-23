@@ -16,7 +16,7 @@ const checkStatus = (status) => {
 const Pendaftaran = ({user}) => {
     const [allSelected, setAllSelected] = useState(false);
     const [selected, setSelected] = useState([]);
-    const {data, put, delete: del, setData, processing} = useForm({
+    const {data, put, get, delete: del, setData, processing} = useForm({
         users: [],
         message: '',
     })
@@ -73,10 +73,14 @@ const Pendaftaran = ({user}) => {
             },
         });
     };
+    
     return (
         <div className="space-y-4">
             <h1 className="text-2xl font-semibold">Pendaftaran</h1>
-            <input type="search" placeholder="Search" className="input input-bordered w-full rounded-full" />
+            <form className="flex items-center gap-2">
+                <input type="search" placeholder="Cari Nama / No Pendaftaran" name="s" className="input input-bordered w-full rounded-full" />
+                <button type="submit" className="btn btn-primary rounded-full">Cari</button>
+            </form>
             <form className="space-y-4">
                 <div className="flex items-center justify-end gap-2">
                     <button type="submit" className="btn btn-success btn-xs" onClick={handleLolos} disabled={processing}>{processing ? 'Processing...' : 'Lolos'}</button>
@@ -108,7 +112,7 @@ const Pendaftaran = ({user}) => {
                         {user?.data.map((item,index) => (
                             <tr key={index}>
                                 <td><input type="checkbox" name="pendaftaran" className="checkbox" checked={selected.includes(item?.user_detail?.id)} onClick={() => handleSelectOne(item?.user_detail?.id)} /></td>
-                                <td>{item?.id}</td>
+                                <td>{item?.nomor_pendaftaran}</td>
                                 <td>{item?.name}</td>
                                 <td>{checkStatus(item?.user_detail?.status)}</td>
                                 <td>{item?.user_detail?.tahap}</td>

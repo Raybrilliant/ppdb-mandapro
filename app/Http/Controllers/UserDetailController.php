@@ -17,17 +17,47 @@ class UserDetailController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $user = User::with('userDetail')->paginate(15);
+        $input = $request->input('s');
+        $input = explode('-', $input);
+        $search = end($input);
+
+        if($search) {
+            $user = User::where('name', 'LIKE', "%$search%")
+            ->orWhere('id', (int)$search)
+            ->with('userDetail')
+            ->whereHas('userDetail', function ($query) {
+                $query->where('validated', true);
+            })->paginate(15);
+        } else {
+            $user = User::with('userDetail')->whereHas('userDetail', function ($query) {
+                $query->where('validated', true);
+            })->paginate(15);
+        }
         return inertia('admin/pendaftaran', [
             'user' => $user,
         ]);
     }
 
-    public function showBerkas()
+    public function showBerkas(Request $request)
     {
-        $user = User::with('documents')->paginate(15);
+        $input = $request->input('s');
+        $input = explode('-', $input);
+        $search = end($input);
+
+        if($search) {
+            $user = User::where('name', 'LIKE', "%$search%")
+            ->orWhere('id', (int)$search)
+            ->with('userDetail')
+            ->whereHas('userDetail', function ($query) {
+                $query->where('validated', true);
+            })->paginate(15);
+        } else {
+            $user = User::with('documents')->whereHas('userDetail', function ($query) {
+                $query->where('validated', true);
+            })->paginate(15);
+        }
         return inertia('admin/berkas', [
             'user' => $user,
         ]);
@@ -96,7 +126,7 @@ class UserDetailController extends Controller
     public function show()
     {
         $id = Auth::user()->id;
-        $user = User::find($id)->with('userDetail','parents','reports','documents','achievements')->first();
+        $user = User::where('id', $id)->with('userDetail','parents','reports','documents','achievements')->first();
         $mapel = Subjects::all();
         $tahap = Level::with('announcement')->get();
         return inertia('user/dashboard', [
@@ -111,7 +141,8 @@ class UserDetailController extends Controller
      */
     public function edit()
     {
-        $user = User::find(Auth::user()->id)->with('userDetail','parents','reports','documents','achievements')->first();
+        $id = Auth::user()->id;
+        $user = User::where('id', $id)->with('userDetail','parents','reports','documents','achievements')->first();
         $mapel = Subjects::all();
         return inertia('user/profile', [
             'user' => $user,
@@ -167,7 +198,7 @@ class UserDetailController extends Controller
         ];
 
         UserDetail::find($id)->update($data);
-        User::find($request->user_id)->update($data_user);
+        User::where('id', $request->user_id)->update($data_user);
         return back();
     }
 
@@ -232,7 +263,7 @@ class UserDetailController extends Controller
         $users = $request->users;
         foreach ($users as $user) {
             $detail = UserDetail::find($user)->user_id;
-            $user = User::find($detail)->with('userDetail','documents')->first();
+            $user = User::where('id', $detail)->with('userDetail','documents')->first();
             if($user->userDetail->photo) {
                 $oldPhotoRelativePath = str_replace('/storage/', '', $user->userDetail->photo);
                 Storage::disk('public')->delete($oldPhotoRelativePath);

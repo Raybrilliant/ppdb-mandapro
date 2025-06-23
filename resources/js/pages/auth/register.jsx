@@ -22,7 +22,7 @@ function Register() {
                 alert('Register berhasil');
             },
             onError: () => {
-                alert('Register gagal');
+                alert('Email kamu sudah terdaftar');
             },
         });
     };

@@ -17,7 +17,6 @@ const sortedMostRegiterSchool = (user) => {
     return sorted;
 }
 const Dashboard = ({user}) => {
-    console.log(sortedMostRegiterSchool(user));
     return (
         <div className="space-y-4">
             <h1 className="text-2xl font-bold">Dashboard</h1>
@@ -28,7 +27,11 @@ const Dashboard = ({user}) => {
                     <div className="stat-value">{new Intl.NumberFormat().format(user.length)}</div>
                     <div className="stat-desc">Siswa Baru</div>
                 </div>
-
+                <div className="stat place-items-center">
+                    <div className="stat-title">Jumlah Terverifikasi</div>
+                    <div className="stat-value">{new Intl.NumberFormat().format(user.filter((item) => item?.user_detail?.validated == true).length)}</div>
+                    <div className="stat-desc">Siswa Terverifikasi</div>
+                </div>
                 <div className="stat place-items-center">
                     <div className="stat-title">Jumlah Calon Siswa Lulus</div>
                     <div className="stat-value text-secondary">{new Intl.NumberFormat().format(user.filter((item) => item?.user_detail?.status == '1').length)}</div>

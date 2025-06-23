@@ -21,7 +21,7 @@ class AuthAdminMiddleware
         }
 
         if (Auth::user()->role !== 'admin') {
-            return redirect('/admin');
+            return redirect('/admin/dashboard');
         }
 
         return $next($request);

@@ -15,6 +15,7 @@
         "daisyui": "^5.0.43",
         "laravel-vite-plugin": "^1.2.0",
         "tailwindcss": "^4.0.0",
+        "tailwindcss-intersect": "^2.2.0",
         "tailwindcss-motion": "^1.1.1",
         "vite": "^6.2.4",
       },
@@ -442,6 +443,8 @@
     "supports-color": ["supports-color@8.1.1", "", { "dependencies": { "has-flag": "^4.0.0" } }, "sha512-MpUEN2OodtUzxvKQl72cUF7RQ5EiHsGvSsVG0ia9c5RbWGL2CI4C7EpPS8UTBIplnlzZiNuV56w+FuNxy3ty2Q=="],
 
     "tailwindcss": ["tailwindcss@4.1.10", "", {}, "sha512-P3nr6WkvKV/ONsTzj6Gb57sWPMX29EPNPopo7+FcpkQaNsrNpZ1pv8QmrYI2RqEKD7mlGqLnGovlcYnBK0IqUA=="],
+
+    "tailwindcss-intersect": ["tailwindcss-intersect@2.2.0", "", { "peerDependencies": { "tailwindcss": ">=3.2.0 || >=4.0.0" } }, "sha512-LnOQ/iU44jNQ8k3OExa7Ccv/y5NlzAN574jjDnX5gLCdlqoeUT5ADtTznF92oAdon3NZA69b+JLknahbwsqxDA=="],
 
     "tailwindcss-motion": ["tailwindcss-motion@1.1.1", "", { "peerDependencies": { "tailwindcss": ">=3.0.0 || insiders" } }, "sha512-CeeQAc5o31BuEPMyWdq/786X7QWNeifa+8khfu74Fs8lGkgEwjNYv6dGv+lRFS8FWXV5dp7F3AU9JjBXjiaQfw=="],
 

@@ -3,6 +3,7 @@
     themes: light --default;
 }
 @plugin "tailwindcss-motion";
+@plugin "tailwindcss-intersect";
 
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../storage/framework/views/*.php';

@@ -22,13 +22,17 @@ class UserController extends Controller
             'password' => 'required',
         ]);
 
-        User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'role' => 'user',
-            'type' => $request->type,
-            'password' => bcrypt($request->password),
-        ]);
+        try {
+            User::create([
+                'name' => $request->name,
+                'email' => $request->email,
+                'role' => 'user',
+                'type' => $request->type,
+                'password' => bcrypt($request->password),
+            ]);
+        } catch (\Throwable $th) {
+            return back()->withErrors('error', 'Email sudah terdaftar');
+        }
 
         return redirect('/login');
     }

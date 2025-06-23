@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { regencies, provinces } from "@/components/geolocation";
 
 function Dashboard({user,mapel,tahap}) {
-    console.log(tahap);
+    console.log(user.nomor_pendaftaran);
     const [lengkap, setLengkap] = useState(false);
     const {data, setData, put, processing} = useForm({
         grades: {
@@ -103,7 +103,7 @@ function Dashboard({user,mapel,tahap}) {
                             <div className="space-y-3">
                                 <h2 className="card-title">{user?.name}</h2>
                                 <div className="flex items-center gap-2">
-                                    <p className="text-sm font-semibold opacity-50">No Pendaftaran : {user?.id}</p>
+                                    <p className="text-sm font-semibold opacity-50">No Pendaftaran : {user?.nomor_pendaftaran}</p>
                                     <p className="text-sm font-semibold opacity-50">Status : {lengkap ? <span className="text-green-600 font-bold">Lengkap</span> : <span className="text-red-600 font-bold">Belum Lengkap</span>}</p>
                                 </div>
                                 <div className="flex items-center gap-2">

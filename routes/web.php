@@ -64,7 +64,7 @@ Route::middleware('user')->group(function () {
 
 Route::middleware('admin')->group(function () {
     Route::prefix('admin')->group(function () {
-    Route::get('/', [UserDetailController::class, 'countDashboard']);
+    Route::get('/dashboard', [UserDetailController::class, 'countDashboard']);
     Route::get('/pendaftaran', [UserDetailController::class, 'index']);
     Route::put('/pendaftaran/bulk/lolos', [UserDetailController::class, 'updateBulkLolos']);
     Route::put('/pendaftaran/bulk/tidak-lolos', [UserDetailController::class, 'updateBulkTidakLolos']);
