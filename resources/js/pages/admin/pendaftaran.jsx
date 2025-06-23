@@ -83,6 +83,7 @@ const Pendaftaran = ({user}) => {
             </form>
             <form className="space-y-4">
                 <div className="flex items-center justify-end gap-2">
+                    <a href="/admin/export" className="btn btn-info btn-xs">Export Data</a>
                     <button type="submit" className="btn btn-success btn-xs" onClick={handleLolos} disabled={processing}>{processing ? 'Processing...' : 'Lolos'}</button>
                     <button type="button" className="btn btn-warning btn-xs" onClick={()=>document.getElementById('modalMessage').showModal()}>Tidak Lolos</button>
                     <button type="submit" className="btn btn-error btn-xs" onClick={handleHapus} disabled={processing}>{processing ? 'Processing...' : 'Hapus'}</button>

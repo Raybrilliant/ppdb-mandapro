@@ -45,9 +45,9 @@ class UserController extends Controller
         ]);
         if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
             if (Auth::user()->role == 'user') {
-                return redirect('/dashboard');
+                return redirect()->route('userDashboard');
             } else {
-                return redirect('/admin');
+                return redirect()->route('adminDashboard');
             }
         }
         return back()->withErrors('error', 'Email atau password salah');

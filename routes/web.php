@@ -12,6 +12,7 @@ use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\SubjectsController;
 use App\Http\Controllers\FAQsController;
 use App\Http\Controllers\AchievementsController;
+use App\Http\Controllers\ExportController;
 use App\Http\Controllers\LandingPagesController;
 
 Route::get('/', [LandingPagesController::class, 'index']);
@@ -64,8 +65,9 @@ Route::middleware('user')->group(function () {
 
 Route::middleware('admin')->group(function () {
     Route::prefix('admin')->group(function () {
-    Route::get('/dashboard', [UserDetailController::class, 'countDashboard']);
+    Route::get('/dashboard', [UserDetailController::class, 'countDashboard'])->name('adminDashboard');
     Route::get('/pendaftaran', [UserDetailController::class, 'index']);
+    Route::get('/export', [ExportController::class, 'export']);
     Route::put('/pendaftaran/bulk/lolos', [UserDetailController::class, 'updateBulkLolos']);
     Route::put('/pendaftaran/bulk/tidak-lolos', [UserDetailController::class, 'updateBulkTidakLolos']);
     Route::delete('/pendaftaran/bulk/hapus', [UserDetailController::class, 'destroy']);

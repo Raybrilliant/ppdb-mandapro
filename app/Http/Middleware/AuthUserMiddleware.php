@@ -21,7 +21,7 @@ class AuthUserMiddleware
         }
 
         if (Auth::user()->role !== 'user') {
-            return redirect('/dashboard');
+            return redirect()->route('adminDashboard');
         }
         
         return $next($request);
