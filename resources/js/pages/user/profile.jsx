@@ -231,7 +231,7 @@ const handleSubmitDocument = (e) => {
         <div>
             {/* Input Detail Data Diri */}
             <section className="card outline outline-black">
-                <Link href="/dashboard/1" className="btn btn-primary w-fit m-2">Kembali</Link>
+                <Link href="/dashboard" className="btn btn-primary w-fit m-2">Kembali</Link>
                 <div className="p-5">
                     <h1 className="text-xl font-bold mb-5">Detail Data Diri</h1>
                     <form onSubmit={handleSubmitProfile}>

@@ -10,6 +10,7 @@ use App\Models\Subjects;
 use App\Models\Achievements;
 use App\Models\Level;
 use App\Models\Announcement;
+use Illuminate\Support\Facades\Auth;
 
 class UserDetailController extends Controller
 {
@@ -52,7 +53,7 @@ class UserDetailController extends Controller
      */
     public function store(Request $request)
     {
-        $request->user_id = 1;
+        $request->user_id = Auth::user()->id;
         if ($request->hasFile('photo')) {
             $request->photo = Storage::disk('public')->put('photos', $request->file('photo'));
         }
@@ -92,8 +93,9 @@ class UserDetailController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show()
     {
+        $id = Auth::user()->id;
         $user = User::find($id)->with('userDetail','parents','reports','documents','achievements')->first();
         $mapel = Subjects::all();
         $tahap = Level::with('announcement')->get();
@@ -107,9 +109,9 @@ class UserDetailController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit()
     {
-        $user = User::find($id)->with('userDetail','parents','reports','documents','achievements')->first();
+        $user = User::find(Auth::user()->id)->with('userDetail','parents','reports','documents','achievements')->first();
         $mapel = Subjects::all();
         return inertia('user/profile', [
             'user' => $user,
@@ -129,7 +131,7 @@ class UserDetailController extends Controller
             $request->photo = Storage::disk('public')->put('photos', $request->file('photo'));
         }
 
-        $request->user_id = 1;
+        $request->user_id = Auth::user()->id;
         $request->validate([
             'nisn' => 'required',
             'gender' => 'required',

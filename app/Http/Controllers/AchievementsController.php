@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Achievements;
+use Illuminate\Support\Facades\Auth;
 
 class AchievementsController extends Controller
 {
@@ -13,7 +14,7 @@ class AchievementsController extends Controller
      */
     public function store(Request $request)
     {
-        $request->user_id = 1;
+        $request->user_id = Auth::user()->id;
         $request->validate([
             'achievement' => 'required',
             'achievement_type' => 'required',

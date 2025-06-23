@@ -4,34 +4,57 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+
+
 
 class UserController extends Controller
 {
     /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function register(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required',
+            'email' => 'required|email|unique:users,email',
+            'type' => 'required',
+            'password' => 'required',
+        ]);
+
+        User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'role' => 'user',
+            'type' => $request->type,
+            'password' => bcrypt($request->password),
+        ]);
+
+        return redirect('/login');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function login(Request $request)
     {
-        $user = User::find($id);
-        return inertia('user/dashboard', [
-            'user' => $user,
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required',
         ]);
+        if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
+            if (Auth::user()->role == 'user') {
+                return redirect('/dashboard');
+            } else {
+                return redirect('/admin');
+            }
+        }
+        return back()->withErrors('error', 'Email atau password salah');
+    }
+
+    public function logout(Request $request)
+    {
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+        return redirect('/');
     }
 
     /**

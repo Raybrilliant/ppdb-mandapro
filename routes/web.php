@@ -16,18 +16,24 @@ use App\Http\Controllers\LandingPagesController;
 
 Route::get('/', [LandingPagesController::class, 'index']);
 
-Route::get('/login', function () {
-    return inertia('auth/login');
+Route::prefix('login')->group(function () {
+    Route::get('/', function () {
+        return inertia('auth/login');
+    });
+    Route::post('/', [UserController::class, 'login']);
 });
 
-Route::get('/register', function () {
-    return inertia('auth/register');
+Route::prefix('register')->group(function () {
+    Route::get('/', function () {
+        return inertia('auth/register');
+    });
+    Route::post('/', [UserController::class, 'register']);
 });
 
-Route::prefix('dashboard')->group(function () {
-    // Validasi
-    Route::put('/validate/{id}', [UserDetailController::class, 'updateValidate']);
-    
+Route::get('/logout', [UserController::class, 'logout']);
+
+Route::middleware('user')->group(function () {
+    Route::prefix('dashboard')->group(function () {    
     // Prestasi
     Route::post('/profile/achievement', [AchievementsController::class, 'store']);
     Route::put('/profile/achievement/{id}', [AchievementsController::class, 'update']);
@@ -45,15 +51,19 @@ Route::prefix('dashboard')->group(function () {
     Route::post('/profile/document/{id}', [DocumentsController::class, 'update']);
 
     // User Profile related routes (UserDetailController)
-    Route::get('/profile/edit/{id}', [UserDetailController::class, 'edit']);
+    Route::get('/profile/edit', [UserDetailController::class, 'edit']);
     Route::post('/profile/create', [UserDetailController::class, 'store']);
     Route::post('/profile/{id}', [UserDetailController::class, 'update']);
+    Route::put('/validate/{id}', [UserDetailController::class, 'updateValidate']);
+
 
     // The most general route last:
-    Route::get('/{id}', [UserDetailController::class, 'show'])->name('userDashboard');
+    Route::get('/', [UserDetailController::class, 'show'])->name('userDashboard');
+    });
 });
 
-Route::prefix('admin')->group(function () {
+Route::middleware('admin')->group(function () {
+    Route::prefix('admin')->group(function () {
     Route::get('/', [UserDetailController::class, 'countDashboard']);
     Route::get('/pendaftaran', [UserDetailController::class, 'index']);
     Route::put('/pendaftaran/bulk/lolos', [UserDetailController::class, 'updateBulkLolos']);
@@ -89,5 +99,6 @@ Route::prefix('admin')->group(function () {
         Route::get('/faq/{id}', [FAQsController::class, 'edit']);
         Route::put('/faq/{id}', [FAQsController::class, 'update']);
         Route::delete('/faq/{id}', [FAQsController::class, 'destroy']);
+    });
     });
 });

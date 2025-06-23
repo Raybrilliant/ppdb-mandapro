@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Reports;
+use Illuminate\Support\Facades\Auth;
 
 class ReportsController extends Controller
 {
@@ -12,7 +13,7 @@ class ReportsController extends Controller
      */
     public function store(Request $request)
     {        
-        $userId = 1;
+        $userId = Auth::user()->id;
 
         foreach ($request->grades as $semesterNumber => $subjectsAndGrades) {
             foreach ($subjectsAndGrades as $subjectId => $gradeValue) {
@@ -34,7 +35,7 @@ class ReportsController extends Controller
      */
     public function update(Request $request)
     {
-        $userId = 1;
+        $userId = Auth::user()->id;
         foreach ($request->grades as $semesterNumber => $subjectsAndGrades) {
             foreach ($subjectsAndGrades as $subjectId => $gradeValue) {
                 $matchingAttributes = [

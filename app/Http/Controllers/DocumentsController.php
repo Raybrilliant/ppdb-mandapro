@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Documents;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Auth;
 
 class DocumentsController extends Controller
 {
@@ -14,7 +15,7 @@ class DocumentsController extends Controller
      */
     public function store(Request $request)
     {
-        $request->user_id = 1;
+        $request->user_id = Auth::user()->id;
         $request->validate([
             'raport' => 'required|file|mimes:pdf|max:5048',
             'kartu_keluarga' => 'required|file|mimes:pdf|max:5048',
@@ -45,7 +46,7 @@ class DocumentsController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $request->user_id = 1;
+        $request->user_id = Auth::user()->id;
         $document = Documents::find($id);
 
         $newRaportPath = $document->raport;

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Parents;
+use Illuminate\Support\Facades\Auth;
 
 class ParentsController extends Controller
 {
@@ -28,7 +29,7 @@ class ParentsController extends Controller
      */
     public function store(Request $request)
     {
-        $request->user_id = 1;
+        $request->user_id = Auth::user()->id;
         $data = [
             'dad_name' => $request->father_name,
             'dad_phone' => $request->father_phone,
@@ -67,7 +68,7 @@ class ParentsController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $request->user_id = 1;
+        $request->user_id = Auth::user()->id;
         $data = [
             'dad_name' => $request->father_name,
             'dad_phone' => $request->father_phone,

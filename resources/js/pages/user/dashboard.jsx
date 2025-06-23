@@ -107,7 +107,7 @@ function Dashboard({user,mapel,tahap}) {
                                     <p className="text-sm font-semibold opacity-50">Status : {lengkap ? <span className="text-green-600 font-bold">Lengkap</span> : <span className="text-red-600 font-bold">Belum Lengkap</span>}</p>
                                 </div>
                                 <div className="flex items-center gap-2">
-                                    <Link href="/dashboard/profile/edit/1" className="btn btn-accent " disabled={user?.user_detail?.validated}>{lengkap ? 'Ubah Profil' : 'Lengkapi Profil'}</Link>
+                                    <Link href="/dashboard/profile/edit" className="btn btn-accent " disabled={user?.user_detail?.validated}>{lengkap ? 'Ubah Profil' : 'Lengkapi Profil'}</Link>
                                     <button className="btn btn-warning" onClick={handleValidate} disabled={processing || user?.user_detail?.validated}>{processing ? 'Sedang Mengirim..' : 'Kirim Validasi'}</button>
                                 </div>
                                 <div className="alert alert-warning"><b>Perhatian !</b> Jika status sudah lengkap maka silahkan kirim validasi. Setelah mengirim validasi, data tidak dapat diubah lagi !</div>
