@@ -98,24 +98,25 @@ function Dashboard({user,mapel,tahap}) {
             <div className=" card outline outline-black my-10">
                 <div className="p-5">
                     <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-5">
+                        <div className="flex max-sm:flex-col items-center gap-5">
                             <img src={'/storage/' + user?.user_detail?.photo} alt="photo" className="w-[10em] h-[15em] object-cover object-center rounded " />
                             <div className="space-y-3">
                                 <h2 className="card-title">{user?.name}</h2>
-                                <div className="flex items-center gap-2">
+                                <div className="flex max-sm:flex-col items-center gap-2">
                                     <p className="text-sm font-semibold opacity-50">No Pendaftaran : {user?.nomor_pendaftaran}</p>
                                     <p className="text-sm font-semibold opacity-50">Status : {lengkap ? <span className="text-green-600 font-bold">Lengkap</span> : <span className="text-red-600 font-bold">Belum Lengkap</span>}</p>
                                 </div>
-                                <div className="flex items-center gap-2">
+                                <div className="flex max-sm:flex-col items-center gap-2">
                                     <Link href="/dashboard/profile/edit" className="btn btn-accent " disabled={user?.user_detail?.validated}>{lengkap ? 'Ubah Profil' : 'Lengkapi Profil'}</Link>
                                     <button className="btn btn-warning" onClick={handleValidate} disabled={processing || user?.user_detail?.validated}>{processing ? 'Sedang Mengirim..' : 'Kirim Validasi'}</button>
+                                    <button onClick={()=>print()} className="btn btn-accent" hidden={!user?.user_detail?.validated}>Cetak Bukti Pendaftaran</button>
                                 </div>
                                 <div className="alert alert-warning"><b>Perhatian !</b> Jika status sudah lengkap maka silahkan kirim validasi. Setelah mengirim validasi, data tidak dapat diubah lagi !</div>
                             </div>
                         </div>
                     </div>
                     {/* Data Detail */}
-                    <div className="grid grid-cols-2 gap-5 my-5">
+                    <div className="grid grid-cols-2 max-sm:grid-cols-1 max-sm:text-sm gap-5 my-5">
                         {/* Data Pribadi */}
                         <div className="space-y-2">
                             <h2 className="card-title">Data Pribadi</h2>
@@ -151,7 +152,7 @@ function Dashboard({user,mapel,tahap}) {
                             <hr />
                             <div className="flex items-center justify-between">
                                 <p>Alamat</p>
-                                <p className="uppercase">{user?.user_detail?.address}, {regencies.find(regency => regency.id == user?.user_detail?.city)?.name}, {provinces.find(province => province.id == user?.user_detail?.province)?.name}</p>
+                                <p className="uppercase max-sm:ms-8">{user?.user_detail?.address}, {regencies.find(regency => regency.id == user?.user_detail?.city)?.name}, {provinces.find(province => province.id == user?.user_detail?.province)?.name}</p>
                             </div>
                             <hr />
                             <div className="flex items-center justify-between">
@@ -198,7 +199,7 @@ function Dashboard({user,mapel,tahap}) {
                             </div>
                         </div>
                         {/* Document */}
-                        <section className="flex gap-2">
+                        <section className="flex max-sm:flex-col gap-2">
                             <a href={'/storage/' + user?.documents?.raport} target="_blank" rel="noopener noreferrer" disabled={!user?.documents?.raport} className="btn btn-primary">Raport</a>
                             <a href={'/storage/' + user?.documents?.kartu_keluarga} target="_blank" rel="noopener noreferrer" disabled={!user?.documents?.kartu_keluarga} className="btn btn-primary">Kartu Keluarga</a>
                             <a href={'/storage/' + user?.documents?.sertifikat_lomba} target="_blank" rel="noopener noreferrer" disabled={!user?.documents?.sertifikat_lomba} className="btn btn-primary">Prestasi</a>
@@ -210,50 +211,52 @@ function Dashboard({user,mapel,tahap}) {
             <div className="card outline outline-black my-10">
                 <div className="p-5">
                     <h2 className="card-title">Raport</h2>
-                    <table className=" table table-zebra">
-                        <thead>
-                            <tr>
-                                <th>Mapel</th>
-                                <th>Semester 1</th>
-                                <th>Semester 2</th>
-                                <th>Semester 3</th>
-                                <th>Semester 4</th>
-                                <th>Semester 5</th>
-                                <th>Rata-Rata</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {mapel.map((mapel, index) => (
-                                <tr key={index}>
-                                    <td>{mapel.name}</td>
-                                    {[1,2,3,4,5].map((semester) => (
-                                        <td key={semester}>{data.grades[semester][mapel.id]}</td>
-                                    ))}
-                                    <td>
-                                        {(() => {
-                                            const gradesForSubject = [
-                                                data.grades[1]?.[mapel.id],
-                                                data.grades[2]?.[mapel.id],
-                                                data.grades[3]?.[mapel.id],
-                                                data.grades[4]?.[mapel.id],
-                                                data.grades[5]?.[mapel.id]
-                                            ];
-                                            const validGrades = gradesForSubject
-                                                .filter(grade => grade !== undefined && grade !== null && grade !== '')
-                                                .map(grade => parseFloat(grade));
-
-                                            if (validGrades.length > 0) {
-                                                const sum = validGrades.reduce((acc, current) => acc + current, 0);
-                                                return Math.round(sum / validGrades.length);
-                                            } else {
-                                                return 'N/A';
-                                            }
-                                        })()}
-                                    </td>
+                    <div className=" overflow-auto">
+                        <table className=" table table-zebra">
+                            <thead>
+                                <tr>
+                                    <th>Mapel</th>
+                                    <th>Semester 1</th>
+                                    <th>Semester 2</th>
+                                    <th>Semester 3</th>
+                                    <th>Semester 4</th>
+                                    <th>Semester 5</th>
+                                    <th>Rata-Rata</th>
                                 </tr>
-                            ))}
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                {mapel.map((mapel, index) => (
+                                    <tr key={index}>
+                                        <td>{mapel.name}</td>
+                                        {[1,2,3,4,5].map((semester) => (
+                                            <td key={semester}>{data.grades[semester][mapel.id]}</td>
+                                        ))}
+                                        <td>
+                                            {(() => {
+                                                const gradesForSubject = [
+                                                    data.grades[1]?.[mapel.id],
+                                                    data.grades[2]?.[mapel.id],
+                                                    data.grades[3]?.[mapel.id],
+                                                    data.grades[4]?.[mapel.id],
+                                                    data.grades[5]?.[mapel.id]
+                                                ];
+                                                const validGrades = gradesForSubject
+                                                    .filter(grade => grade !== undefined && grade !== null && grade !== '')
+                                                    .map(grade => parseFloat(grade));
+
+                                                if (validGrades.length > 0) {
+                                                    const sum = validGrades.reduce((acc, current) => acc + current, 0);
+                                                    return Math.round(sum / validGrades.length);
+                                                } else {
+                                                    return 'N/A';
+                                                }
+                                            })()}
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
                     {/* Prestasi */}
                     <h2 className="card-title mt-5">Prestasi</h2>
                     {user.achievements ? (
