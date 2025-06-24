@@ -23,7 +23,7 @@ function Login() {
         <div className="flex justify-center items-center h-screen">
             <div className="card w-96 bg-base-100 shadow-xl">
                 <div className="card-body">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Kementerian_Agama_new_logo.png/640px-Kementerian_Agama_new_logo.png" alt="logo-kemenag" className="w-20 mx-auto" />
+                    <img src="/logo/kemenag.png" alt="logo-kemenag" className="w-20 mx-auto" />
                     <h2 className="text-2xl font-bold text-center">MAN 2 Kota Probolinggo</h2>
                     <p className="text-sm font-semibold opacity-50 text-center">Silahkan login untuk masuk ke dalam sistem</p>
                     <form className="space-y-3" onSubmit={handleLogin}>
