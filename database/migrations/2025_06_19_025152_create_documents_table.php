@@ -16,7 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('user_id');
             $table->string('raport');
             $table->string('kartu_keluarga');
-            $table->string('sertifikat_lomba');
+            $table->string('sertifikat_lomba')->nullable();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
         });

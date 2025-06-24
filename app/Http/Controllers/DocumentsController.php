@@ -26,6 +26,8 @@ class DocumentsController extends Controller
         $kartu_keluarga = Storage::disk('public')->put('kartu_keluargas', $request->file('kartu_keluarga'));
         if ($request->hasFile('sertifikat_lomba')) {
             $sertifikat_lomba = Storage::disk('public')->put('sertifikat_lombas', $request->file('sertifikat_lomba'));
+        } else {
+            $sertifikat_lomba = null;
         }
 
         $data = [
