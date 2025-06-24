@@ -2,23 +2,11 @@ import { Link } from "@inertiajs/react";
 import HomeLayout from "@/layouts/home-layout";
 
 // Testimoni
-const testimoni = [
-    {
-        name: 'Aisyah Nuril',
-        image:'/testimoni1.png',
-        message: 'Sekolah di MAN 2 Kota Probolinggo memberikan pengalaman yang luar biasa, saya sangat menyarankan sekolah ini.',
-    },
-    {
-        name: 'Ahmad Suruji',
-        image:'/testimoni2.png',
-        message: 'Sekolah di MAN 2 Kota Probolinggo memberikan pengalaman yang luar biasa, saya sangat menyarankan sekolah ini.',
-    },
-    {
-        name: 'Rocky',
-        image:'/testimoni3.png',
-        message: 'Sekolah di MAN 2 Kota Probolinggo memberikan pengalaman yang luar biasa, saya sangat menyarankan sekolah ini.',
-    },
-]
+const testimoni = {
+    name: 'Aisyah Nuril',
+    image:'/home/testimoni1.png',
+    message: 'Sekolah di MAN 2 Kota Probolinggo memberikan pengalaman yang luar biasa, saya sangat menyarankan sekolah ini.',
+}
 
 // Program Unggulan
 const programs = [
@@ -57,7 +45,7 @@ const programs = [
 // Kepala Madrasah
 const principle = {
     name: 'Drs. H. Moh. Alfan Makmur, M.M',
-    image: '/principle.png',
+    image: '/home/principle.png',
     message: "Di Madrasah Aliyah Negeri 2 Kota Probolinggo, kami percaya bahwa pendidikan adalah kunci untuk membuka masa depan yang lebih cerah. Kami bangga telah membantu banyak lulusan kami menembus perguruan tinggi favorit, baik di dalam maupun luar negeri, serta meraih prestasi yang membanggakan di berbagai bidang. <br /> <br /> Dengan pendekatan pendidikan yang menyeluruh—memadukan kecerdasan akademis dan penguatan karakter berbasis nilai-nilai Islam—kami berkomitmen untuk terus mencetak generasi yang siap menghadapi tantangan dunia global. Kami percaya bahwa setiap siswa memiliki potensi luar biasa yang perlu dibimbing dan dikembangkan. <br /> <br /> Semoga perjalanan pendidikan yang akan dihadapi putra-putri Anda di sini menjadi langkah menuju kesuksesan mereka.",
 }
 
@@ -88,7 +76,7 @@ function Home({faqs,user}) {
                 {/* Left */}
                 <div className=' grid grid-cols-2 gap-2'>
                     <div className='relative overflow-hidden aspect-video rounded-xl border border-sidebar-border/70 dark:border-sidebar-border motion-preset-blur-right-md motion-duration-[2s] motion-ease-in-out'>
-                        <img src="https://man2kotaprobolinggo.sch.id/wp-content/uploads/2024/11/IMG_20241123_201600.jpg" alt="PPDB" className='object-cover w-full h-full blur-[1px] object-center' />
+                        <img src="/home/bg-register.jpg" alt="PPDB" className='object-cover w-full h-full blur-[1px] object-center' />
                         <div className="absolute inset-0 bg-black opacity-50"></div>
                         <div className="absolute inset-0 flex text-white flex-col p-5 uppercase font-bold text-4xl">
                             <h1>PPDB Gelombang 2</h1>
@@ -103,16 +91,16 @@ function Home({faqs,user}) {
                         <div className='w-full overflow-hidden rounded-xl bg-emerald-600'>
                             <div className='grid grid-cols-3 overflow-hidden items-center p-5'>
                                 <div className='text-white space-y-3 col-span-2'>
-                                    <p className="text-lg">{testimoni[0].message}</p>
-                                    <p className="text-lg italic">~ {testimoni[0].name}</p>
+                                    <p className="text-lg">{testimoni.message}</p>
+                                    <p className="text-lg italic">~ {testimoni.name}</p>
                                 </div>
-                                <img src={testimoni[0].image} alt="testimoni" className='object-cover h-32 w-full object-top mx-auto' />
+                                <img src={testimoni.image} alt="testimoni" className='object-cover h-32 w-full object-top mx-auto' />
                             </div>
                         </div>
                         {/* Right Bottom */}
                         <div className='flex gap-2'>
-                            <img src="https://man2kotaprobolinggo.sch.id/wp-content/uploads/2024/10/IMG_8493_11zon-1.jpg" alt="ppdb" className='w-full aspect-video object-cover rounded-xl' />
-                            <img src="https://man2kotaprobolinggo.sch.id/wp-content/uploads/2024/10/WhatsApp-Image-2024-10-29-at-08.21.05.jpeg" alt="ppdb" className='w-full aspect-video object-cover object-center rounded-xl' />
+                            <img src="/home/bg-1.jpg" alt="ppdb" className='w-full aspect-video object-cover rounded-xl' />
+                            <img src="/home/bg-2.jpg" alt="ppdb" className='w-full aspect-video object-cover object-center rounded-xl' />
                         </div>
                     </div>
                 </div>
