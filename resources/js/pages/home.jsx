@@ -88,13 +88,13 @@ function Home({faqs,user}) {
                     </div>
                     {/* Right */}
                     <div className='grid grid-rows-2 gap-2 motion-preset-blur-left-md motion-duration-[2s] motion-ease-in-out'>
-                        <div className='w-full overflow-hidden rounded-xl bg-emerald-600'>
+                        <div className='w-full overflow-hidden rounded-xl bg-emerald-600 relative'>
                             <div className='grid grid-cols-3 overflow-hidden items-center p-5'>
                                 <div className='text-white space-y-3 col-span-2'>
                                     <p className="text-lg">{testimoni.message}</p>
                                     <p className="text-lg italic">~ {testimoni.name}</p>
                                 </div>
-                                <img src={testimoni.image} alt="testimoni" className='object-cover h-32 w-full object-top mx-auto' />
+                                <img src={testimoni.image} alt="testimoni" className='absolute -bottom-30 right-5' />
                             </div>
                         </div>
                         {/* Right Bottom */}
