@@ -1,7 +1,18 @@
 import AdminLayout from "@/layouts/admin-layout";
 import { Link } from "@inertiajs/react";
+import { useForm } from "@inertiajs/react";
 
 const Berkas = ({user}) => {
+    console.log(user);
+    const {processing, put} = useForm();
+
+    const handleUnvalidate = (id) => {
+        put('/admin/berkas/unvalidate/' + id, {
+            onSuccess: () => {
+                alert('Data berhasil dikembalikan');
+            },
+        });
+    };
     return (
         <div className="space-y-4">
             <h1 className="text-2xl font-semibold">Berkas</h1>
@@ -19,6 +30,7 @@ const Berkas = ({user}) => {
                             <th>Kartu Keluarga</th>
                             <th>Raport</th>
                             <th>Sertifikat Lomba</th>
+                            <th>Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -30,6 +42,7 @@ const Berkas = ({user}) => {
                                 <td><a href={'/storage/' + item?.documents?.kartu_keluarga} disabled={!item?.documents?.kartu_keluarga} className="btn btn-xs btn-info" target="_blank" rel="noopener noreferrer">Lihat</a></td>
                                 <td><a href={'/storage/' + item?.documents?.raport} disabled={!item?.documents?.raport} className="btn btn-xs btn-info" target="_blank" rel="noopener noreferrer">Lihat</a></td>
                                 <td><a href={'/storage/' + item?.documents?.sertifikat_lomba} disabled={!item?.documents?.sertifikat_lomba} className="btn btn-xs btn-info" target="_blank" rel="noopener noreferrer">Lihat</a></td>
+                                <td><button className="btn btn-xs btn-error" onClick={() => handleUnvalidate(item?.user_detail?.id)} disabled={processing}>{processing ? 'Sedang Mengirim..' : 'Data Tidak Lengkap'}</button></td>
                             </tr>
                         ))}
                     </tbody>

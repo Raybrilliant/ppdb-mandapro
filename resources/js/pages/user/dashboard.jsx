@@ -122,17 +122,12 @@ function Dashboard({user,mapel,tahap}) {
                             <h2 className="card-title">Data Pribadi</h2>
                             <div className="flex items-center justify-between">
                                 <p>NISN</p>
-                                <p>{user?.user_detail?.nisn}</p>
+                                <p>{user?.nisn}</p>
                             </div>
                             <hr />
                             <div className="flex items-center justify-between">
                                 <p>No WhatsApp</p>
                                 <p>{user?.user_detail?.phone}</p>
-                            </div>
-                            <hr />
-                            <div className="flex items-center justify-between">
-                                <p>Email</p>
-                                <p>{user?.email}</p>
                             </div>
                             <hr />
                             <div className="flex items-center justify-between">

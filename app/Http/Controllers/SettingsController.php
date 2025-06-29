@@ -14,7 +14,7 @@ class SettingsController extends Controller
 {
     public function index()
     {
-        $levels = Level::with('announcement')->get();
+        $levels = Level::with('announcement')->orderBy('created_at', 'asc')->get();
         $subjects = Subjects::all();
         // $testimonis = Testimoni::all();
         // $programs = Program::all();

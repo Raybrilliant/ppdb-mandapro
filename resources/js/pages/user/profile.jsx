@@ -16,9 +16,9 @@ function Profile({user,mapel}) {
 
     // console.log(user);
 
-    const {data,setData,post,put,processing} = useForm({
+    const {data,setData,post,put,processing, errors} = useForm({
         name:user?.name,
-        nisn:user?.user_detail?.nisn,
+        nisn:user?.nisn,
         gender:user?.user_detail?.gender,
         birthplace:user?.user_detail?.birth_place,
         birthdate:user?.user_detail?.birth_date,
@@ -243,16 +243,12 @@ const handleSubmitDocument = (e) => {
                                 <input type="text" id="name" name="name" defaultValue={data.name} onChange={(e) => setData('name', e.target.value)} className="input input-bordered w-full" required />
                             </div>
                             <div>
-                                <label htmlFor="email">Email</label>
-                                <input type="email" id="email" name="email" defaultValue={data.email} onChange={(e) => setData('email', e.target.value)} className="input input-bordered w-full" required />
+                                <label htmlFor="nisn">NISN</label>
+                                <input type="text" id="nisn" name="nisn" defaultValue={data.nisn} onChange={(e) => setData('nisn', e.target.value)} className="input input-bordered w-full" required />
                             </div>
                             </>
                             ) : null
                             }
-                            <div>
-                                <label htmlFor="nisn">NISN</label>
-                                <input type="text" id="nisn" name="nisn" defaultValue={data.nisn} onChange={(e) => setData('nisn', e.target.value)} className="input input-bordered w-full" required />
-                            </div>
                             <div>
                                 <label htmlFor="phone">No. WhatsApp</label>
                                 <input type="tel" id="phone" name="phone" defaultValue={data.phone} onChange={(e) => setData('phone', e.target.value)} className="input input-bordered w-full" required />
@@ -474,17 +470,20 @@ const handleSubmitDocument = (e) => {
                                 <label htmlFor="raport">Raport</label>
                                 <input type="file" id="raport" name="raport" accept="application/pdf" onChange={(e) => setData('raport', e.target.files[0])} className="file-input file-input-bordered w-full" />
                                 <p className="text-sm text-gray-500">File dijadikan 1 PDF</p>
+                                {errors.raport && <p className="text-red-500">{errors.raport}</p>}
                             </div>
                             <div>
                                 <label htmlFor="kartu_keluarga">Kartu Keluarga</label>
                                 <input type="file" id="kartu_keluarga" name="kartu_keluarga" accept="application/pdf" onChange={(e) => setData('kartu_keluarga', e.target.files[0])} className="file-input file-input-bordered w-full" />
                                 <p className="text-sm text-gray-500">Format file: PDF, Max. 5MB</p>
+                                {errors.kartu_keluarga && <p className="text-red-500">{errors.kartu_keluarga}</p>}
                             </div>
                             {user.type === 'prestasi' && (
                             <div>
                                 <label htmlFor="sertifikat_lomba">Sertifikat Lomba</label>
                                 <input type="file" id="sertifikat_lomba" name="sertifikat_lomba" accept="application/pdf" onChange={(e) => setData('sertifikat_lomba', e.target.files[0])} className="file-input file-input-bordered w-full" />
                                 <p className="text-sm text-gray-500">File dijadikan 1 PDF</p>
+                                {errors.sertifikat_lomba && <p className="text-red-500">{errors.sertifikat_lomba}</p>}
                             </div>
                             )}
                         </div>

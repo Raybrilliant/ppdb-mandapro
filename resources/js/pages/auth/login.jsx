@@ -3,8 +3,8 @@ import { Link } from "@inertiajs/react";
 import { useForm } from "@inertiajs/react";
 
 function Login() {
-    const {setData, post, processing} = useForm({
-        email: '',
+    const {data, setData, post, processing} = useForm({
+        nisn: '',
         password: '',
     });
 
@@ -15,7 +15,7 @@ function Login() {
                 alert('Login berhasil');
             },
             onError: () => {
-                alert("Email atau password salah");
+                alert("NISN atau password salah");
             },
         });
     };
@@ -29,9 +29,9 @@ function Login() {
                     <form className="space-y-3" onSubmit={handleLogin}>
                         <div className="form-control">
                             <label className="label">
-                                <span className="label-text">Email</span>
+                                <span className="label-text">NISN</span>
                             </label>
-                            <input type="email" placeholder="email" className="input input-bordered w-full" onChange={(e) => setData('email', e.target.value)} required />
+                            <input type="text" maxLength={10} minLength={10} placeholder="nisn" className="input input-bordered w-full" onChange={(e) => setData('nisn', e.target.value)} required />
                         </div>
                         <div className="form-control">
                             <label className="label">
@@ -40,7 +40,7 @@ function Login() {
                             <input type="password" placeholder="password" className="input input-bordered w-full" onChange={(e) => setData('password', e.target.value)} required />
                         </div>
                         <div className="form-control">
-                            <button className="btn bg-emerald-600 text-white w-full" type="submit" disabled={processing}>{processing ? 'Loading...' : 'Login'}</button>
+                            <button className="btn bg-emerald-600 text-white w-full" type="submit" disabled={processing || data.nisn.length != 10}>{processing ? 'Loading...' : 'Login'}</button>
                         </div>
                     </form>
                     <p className="text-sm font-semibold opacity-50 text-center">Belum punya akun? <Link href="/register" className="text-emerald-600 font-bold">Daftar</Link></p>

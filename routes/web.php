@@ -72,6 +72,7 @@ Route::middleware('admin')->group(function () {
     Route::put('/pendaftaran/bulk/tidak-lolos', [UserDetailController::class, 'updateBulkTidakLolos']);
     Route::delete('/pendaftaran/bulk/hapus', [UserDetailController::class, 'destroy']);
     Route::get('/berkas', [UserDetailController::class, 'showBerkas']);
+    Route::put('/berkas/unvalidate/{id}', [UserDetailController::class, 'updateUnvalidate']);
     Route::prefix('/setting')->group(function () {
         Route::get('/', [SettingsController::class, 'index']);
         // Pengumuman

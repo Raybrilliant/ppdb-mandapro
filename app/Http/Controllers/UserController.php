@@ -17,7 +17,7 @@ class UserController extends Controller
     {
         $request->validate([
             'name' => 'required',
-            'email' => 'required|email|unique:users,email',
+            'nisn' => 'required|unique:users,nisn',
             'type' => 'required',
             'password' => 'required',
         ]);
@@ -25,13 +25,13 @@ class UserController extends Controller
         try {
             User::create([
                 'name' => $request->name,
-                'email' => $request->email,
+                'nisn' => $request->nisn,
                 'role' => 'user',
                 'type' => $request->type,
                 'password' => bcrypt($request->password),
             ]);
         } catch (\Throwable $th) {
-            return back()->withErrors('error', 'Email sudah terdaftar');
+            return back()->withErrors('error', 'NISN sudah terdaftar');
         }
 
         return redirect('/login');
@@ -40,17 +40,17 @@ class UserController extends Controller
     public function login(Request $request)
     {
         $request->validate([
-            'email' => 'required|email',
+            'nisn' => 'required',
             'password' => 'required',
         ]);
-        if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
+        if (Auth::attempt(['nisn' => $request->nisn, 'password' => $request->password])) {
             if (Auth::user()->role == 'user') {
                 return redirect()->route('userDashboard');
             } else {
                 return redirect()->route('adminDashboard');
             }
         }
-        return back()->withErrors('error', 'Email atau password salah');
+        return back()->withErrors('error', 'NISN atau password salah');
     }
 
     public function logout(Request $request)
@@ -59,29 +59,5 @@ class UserController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
         return redirect('/');
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
     }
 }

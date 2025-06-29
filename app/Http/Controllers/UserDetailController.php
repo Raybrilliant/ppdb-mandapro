@@ -54,7 +54,7 @@ class UserDetailController extends Controller
                 $query->where('validated', true);
             })->paginate(15);
         } else {
-            $user = User::with('documents')->whereHas('userDetail', function ($query) {
+            $user = User::with('documents','userDetail')->whereHas('userDetail', function ($query) {
                 $query->where('validated', true);
             })->paginate(15);
         }
@@ -88,7 +88,6 @@ class UserDetailController extends Controller
             $request->photo = Storage::disk('public')->put('photos', $request->file('photo'));
         }
         $request->validate([
-            'nisn' => 'required',
             'gender' => 'required',
             'birthplace' => 'required',
             'birthdate' => 'required',
@@ -103,7 +102,6 @@ class UserDetailController extends Controller
         
         $data = [
             'user_id' => $request->user_id,
-            'nisn' => $request->nisn,
             'gender' => $request->gender,
             'birth_place' => $request->birthplace,
             'birth_date' => $request->birthdate,
@@ -128,7 +126,7 @@ class UserDetailController extends Controller
         $id = Auth::user()->id;
         $user = User::where('id', $id)->with('userDetail','parents','reports','documents','achievements')->first();
         $mapel = Subjects::all();
-        $tahap = Level::with('announcement')->get();
+        $tahap = Level::with('announcement')->orderBy('created_at', 'asc')->get();
         return inertia('user/dashboard', [
             'user' => $user,
             'mapel' => $mapel,
@@ -164,7 +162,6 @@ class UserDetailController extends Controller
 
         $request->user_id = Auth::user()->id;
         $request->validate([
-            'nisn' => 'required',
             'gender' => 'required',
             'birthplace' => 'required',
             'birthdate' => 'required',
@@ -179,7 +176,6 @@ class UserDetailController extends Controller
         
         $data = [
             'user_id' => $request->user_id,
-            'nisn' => $request->nisn,
             'gender' => $request->gender,
             'birth_place' => $request->birthplace,
             'birth_date' => $request->birthdate,
@@ -194,7 +190,7 @@ class UserDetailController extends Controller
         ];
         $data_user = [
             'name' => $request->name,
-            'email' => $request->email,
+            'nisn' => $request->nisn,
         ];
 
         UserDetail::find($id)->update($data);
@@ -251,6 +247,15 @@ class UserDetailController extends Controller
     {
         $data = [
             'validated' => true,
+        ];
+        UserDetail::find($id)->update($data);
+        return back();
+    }
+
+    public function updateUnvalidate(Request $request, string $id)
+    {
+        $data = [
+            'validated' => false,
         ];
         UserDetail::find($id)->update($data);
         return back();

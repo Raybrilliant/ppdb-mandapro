@@ -21,8 +21,6 @@ const Pendaftaran = ({user}) => {
         message: '',
     })
 
-    console.log(data);
-    
 
     const handleSelectAll = () => {
         setAllSelected(!allSelected);
@@ -102,7 +100,6 @@ const Pendaftaran = ({user}) => {
                             <th>Tempat Lahir</th>
                             <th>Tanggal Lahir</th>
                             <th>WhatsApp</th>
-                            <th>Email</th>
                             <th>Alamat</th>
                             <th>Kota</th>
                             <th>Provinsi</th>
@@ -122,7 +119,6 @@ const Pendaftaran = ({user}) => {
                                 <td>{item?.user_detail?.birth_place}</td>
                                 <td>{new Date(item?.user_detail?.birth_date).toLocaleDateString('id-ID', { year: 'numeric', month: 'long', day: 'numeric' })}</td>
                                 <td>{item?.user_detail?.phone}</td>
-                                <td>{item?.email}</td>
                                 <td>{item?.user_detail?.address}</td>
                                 <td>{regencies.find((regency) => regency.id == item?.user_detail?.city)?.name}</td>
                                 <td>{provinces.find((province) => province.id == item?.user_detail?.province)?.name}</td>

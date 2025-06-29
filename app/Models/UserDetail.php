@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 class UserDetail extends Model
 {
     protected $fillable = [
-        'nisn',
         'phone',
         'gender',
         'birth_date',
