@@ -51,7 +51,7 @@ function Home({faqs,user}) {
                             </div>
                         </div>
                         {/* Right Bottom */}
-                        <div className='flex gap-2 '>
+                        <div className='flex gap-2'>
                             {gambarhomepage.map((gambar, index) => (
                                 <img key={index} src={gambar.image} alt="ppdb" className='w-full object-cover aspect-video rounded-xl' />
                             ))}
