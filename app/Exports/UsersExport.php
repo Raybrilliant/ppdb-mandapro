@@ -26,7 +26,7 @@ class UsersExport implements FromCollection, WithHeadings, WithMapping
     public function collection()
     {
         $user = User::with('userDetail', 'parents')->whereHas('userDetail', function ($query) {
-            $query->where('validated', true);
+            $query->where('validated', true)->where('status', 1);
         })->get();
         return $user;
     }

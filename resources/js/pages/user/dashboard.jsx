@@ -109,7 +109,7 @@ function Dashboard({user,mapel,tahap}) {
                                 <div className="flex max-sm:flex-col items-center gap-2">
                                     <Link href="/dashboard/profile/edit" className="btn btn-accent " disabled={user?.user_detail?.validated}>{lengkap ? 'Ubah Profil' : 'Lengkapi Profil'}</Link>
                                     <button className="btn btn-warning" onClick={handleValidate} disabled={processing || user?.user_detail?.validated}>{processing ? 'Sedang Mengirim..' : 'Kirim Validasi'}</button>
-                                    <button onClick={()=>print()} className="btn btn-accent" hidden={!user?.user_detail?.validated}>Cetak Bukti Pendaftaran</button>
+                                    <button onClick={()=>print('landscape')} className="btn btn-accent" hidden={!user?.user_detail?.validated}>Cetak Bukti Pendaftaran</button>
                                 </div>
                                 <div className="alert alert-warning"><b>Perhatian !</b> Jika status sudah lengkap maka silahkan kirim validasi. Setelah mengirim validasi, data tidak dapat diubah lagi !</div>
                             </div>
@@ -198,6 +198,7 @@ function Dashboard({user,mapel,tahap}) {
                             <a href={'/storage/' + user?.documents?.raport} target="_blank" rel="noopener noreferrer" disabled={!user?.documents?.raport} className="btn btn-primary">Raport</a>
                             <a href={'/storage/' + user?.documents?.kartu_keluarga} target="_blank" rel="noopener noreferrer" disabled={!user?.documents?.kartu_keluarga} className="btn btn-primary">Kartu Keluarga</a>
                             <a href={'/storage/' + user?.documents?.sertifikat_lomba} target="_blank" rel="noopener noreferrer" disabled={!user?.documents?.sertifikat_lomba} className="btn btn-primary">Prestasi</a>
+                            <a href={'/storage/' + user?.documents?.ijazah} target="_blank" rel="noopener noreferrer" disabled={!user?.documents?.ijazah} className="btn btn-primary">Ijazah</a>
                         </section>
                     </div>
                 </div>

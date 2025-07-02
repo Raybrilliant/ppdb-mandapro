@@ -11,6 +11,7 @@ class Documents extends Model
         'raport',
         'kartu_keluarga',
         'sertifikat_lomba',
+        'ijazah'
     ];
     public function user()
     {

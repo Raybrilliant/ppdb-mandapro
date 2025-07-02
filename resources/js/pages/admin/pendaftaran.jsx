@@ -13,10 +13,10 @@ const checkStatus = (status) => {
             return '-';
     }
 }
-const Pendaftaran = ({user}) => {
+const Pendaftaran = ({user, status, search}) => {
     const [allSelected, setAllSelected] = useState(false);
     const [selected, setSelected] = useState([]);
-    const {data, put, get, delete: del, setData, processing} = useForm({
+    const {data, put, delete: del, setData, processing} = useForm({
         users: [],
         message: '',
     })
@@ -76,7 +76,12 @@ const Pendaftaran = ({user}) => {
         <div className="space-y-4">
             <h1 className="text-2xl font-semibold">Pendaftaran</h1>
             <form className="flex items-center gap-2">
-                <input type="search" placeholder="Cari Nama / No Pendaftaran" name="s" className="input input-bordered w-full rounded-full" />
+                <input type="search" placeholder="Cari Nama / No Pendaftaran" name="s" defaultValue={search} className="input input-bordered w-full rounded-full" />
+                <select name="status" className="select w-1/6 rounded-full" defaultValue={status}>
+                    <option value="">Pilih Status</option>
+                    <option value="1">Lulus</option>
+                    <option value="2">Tidak Lulus</option>
+                </select>
                 <button type="submit" className="btn btn-primary rounded-full">Cari</button>
             </form>
             <form className="space-y-4">

@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('raport');
             $table->string('kartu_keluarga');
             $table->string('sertifikat_lomba')->nullable();
+            $table->string('ijazah')->nullable();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
         });

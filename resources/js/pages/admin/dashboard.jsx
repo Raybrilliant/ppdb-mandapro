@@ -43,7 +43,7 @@ const Dashboard = ({user}) => {
                 <table className="table table-zebra">
                     <thead>
                         <tr>
-                            <th>Ranking</th>
+                            <th>No</th>
                             <th>Nama Sekolah</th>
                             <th>Jumlah Pendaftar</th>
                         </tr>

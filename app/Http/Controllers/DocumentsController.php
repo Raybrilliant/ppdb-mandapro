@@ -20,6 +20,7 @@ class DocumentsController extends Controller
             'raport' => 'required|file|mimes:pdf|max:5048',
             'kartu_keluarga' => 'required|file|mimes:pdf|max:5048',
             'sertifikat_lomba' => 'nullable|file|mimes:pdf|max:5048',
+            'ijazah' => 'nullable|file|mimes:pdf|max:5048',
         ]);
 
         $raport = Storage::disk('public')->put('raports', $request->file('raport'));
@@ -29,12 +30,18 @@ class DocumentsController extends Controller
         } else {
             $sertifikat_lomba = null;
         }
+        if ($request->hasFile('ijazah')) {
+            $ijazah = Storage::disk('public')->put('ijazah', $request->file('ijazah'));
+        } else {
+            $ijazah = null;
+        }
 
         $data = [
             'user_id' => $request->user_id,
             'raport' => $raport,
             'kartu_keluarga' => $kartu_keluarga,
             'sertifikat_lomba' => $sertifikat_lomba,
+            'ijazah' => $ijazah,
         ];
 
 
@@ -85,11 +92,26 @@ class DocumentsController extends Controller
             $newSertifikatLombaPath = null;
         }
 
+        if ($request->hasFile('ijazah')) {
+            if ($document->ijazah) {
+                $oldIjazahRelativePath = str_replace('/storage/', '', $document->ijazah);
+                Storage::disk('public')->delete($oldIjazahRelativePath);
+            }
+            $newIjazahPath = Storage::disk('public')->put('ijazah', $request->file('ijazah'));
+        } elseif ($request->input('ijazah_removed')) {
+            if ($document->ijazah) {
+                $oldIjazahRelativePath = str_replace('/storage/', '', $document->ijazah);
+                Storage::disk('public')->delete($oldIjazahRelativePath);
+            }
+            $newIjazahPath = null;
+        }
+
         $dataToUpdate = [
             'user_id' => $request->user_id,
             'raport' => $newRaportPath,
             'kartu_keluarga' => $newKartuKeluargaPath,
             'sertifikat_lomba' => $newSertifikatLombaPath,
+            'ijazah' => $newIjazahPath,
         ];
         
         $document->update($dataToUpdate);

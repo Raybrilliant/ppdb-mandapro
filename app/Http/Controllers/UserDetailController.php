@@ -20,51 +20,63 @@ class UserDetailController extends Controller
     public function index(Request $request)
     {
         $input = $request->input('s');
-        $input = explode('-', $input);
-        $search = end($input);
+        $status = $request->input('status');
+        $ripoff = explode('-', $input);
+        $search = end($ripoff);
 
-        if($search) {
-            $user = User::where('name', 'LIKE', "%$search%")
-            ->orWhere('id', (int)$search)
+        if($search || $status) {
+            $user = User::where('role', 'user')
+            ->where(function ($query) use ($search) {
+                $query->where('name', 'LIKE', "%$search%")->orWhere('id', (int)$search);
+            })
             ->with('userDetail')
-            ->whereHas('userDetail', function ($query) {
-                $query->where('validated', true);
-            })->paginate(15);
+            ->whereHas('userDetail', function ($query) use ($status) {
+                $query->where('validated', true)->when($status, function ($query) use ($status) {
+                    $query->where('status', $status);
+                });
+            })->orderBy('created_at', 'asc')->paginate(20);
         } else {
-            $user = User::with('userDetail')->whereHas('userDetail', function ($query) {
-                $query->where('validated', true);
-            })->paginate(15);
+            $user = User::where('role', 'user')->with('userDetail')->whereHas('userDetail', function ($query) use ($status) {
+                $query->where('validated', true)->when($status, function ($query) use ($status) {
+                    $query->where('status', $status);
+                });
+            })->orderBy('created_at', 'asc')->paginate(20);
         }
         return inertia('admin/pendaftaran', [
             'user' => $user,
+            'status' => $status,
+            'search' => $input,
         ]);
     }
 
     public function showBerkas(Request $request)
     {
         $input = $request->input('s');
-        $input = explode('-', $input);
-        $search = end($input);
+        $ripoff = explode('-', $input);
+        $search = end($ripoff);
 
         if($search) {
-            $user = User::where('name', 'LIKE', "%$search%")
-            ->orWhere('id', (int)$search)
+            $user = User::where('role', 'user')
+            ->where(function ($query) use ($search) {
+                $query->where('name', 'LIKE', "%$search%")->orWhere('id', (int)$search);
+            })
             ->with('userDetail')
             ->whereHas('userDetail', function ($query) {
                 $query->where('validated', true);
-            })->paginate(15);
+            })->orderBy('created_at', 'asc')->paginate(20);
         } else {
-            $user = User::with('documents','userDetail')->whereHas('userDetail', function ($query) {
+            $user = User::where('role', 'user')->with('documents','userDetail')->whereHas('userDetail', function ($query) {
                 $query->where('validated', true);
-            })->paginate(15);
+            })->orderBy('created_at', 'asc')->paginate(20);
         }
         return inertia('admin/berkas', [
             'user' => $user,
+            'search' => $input,
         ]);
     }
     public function countDashboard()
     {
-        $user = User::with('userDetail')->get();
+        $user = User::where('role', 'user')->with('userDetail')->get();
         return inertia('admin/dashboard', [
             'user' => $user,
         ]);
@@ -284,6 +296,10 @@ class UserDetailController extends Controller
             if($user->documents?->sertifikat_lomba) {
                 $oldSertifikatLombaRelativePath = str_replace('/storage/', '', $user->documents->sertifikat_lomba);
                 Storage::disk('public')->delete($oldSertifikatLombaRelativePath);
+            }
+            if($user->documents?->ijazah) {
+                $oldIjazahRelativePath = str_replace('/storage/', '', $user->documents->ijazah);
+                Storage::disk('public')->delete($oldIjazahRelativePath);
             }
             $user->delete();
         }

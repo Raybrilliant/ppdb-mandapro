@@ -62,6 +62,7 @@ function Profile({user,mapel}) {
         raport:null,
         kartu_keluarga:null,
         sertifikat_lomba:null,
+        ijazah:null,
     });
     
     // Input Data Diri
@@ -72,12 +73,14 @@ function Profile({user,mapel}) {
             onSuccess: () => {
                 alert('Data berhasil disimpan');
             },
+            preserveScroll:true,
         });
     } else {
         post('/dashboard/profile/create',{
             onSuccess: () => {
                 alert('Data berhasil disimpan');
             },
+            preserveScroll:true,
         });
     }
 }
@@ -90,12 +93,14 @@ const handleSubmitParents = (e) => {
             onSuccess: () => {
                 alert('Data berhasil disimpan');
             },
+            preserveScroll:true,
         });
     } else {
         post('/dashboard/profile/parents',{
             onSuccess: () => {
                 alert('Data berhasil disimpan');
             },
+            preserveScroll:true,
         });
     }
 }
@@ -108,11 +113,14 @@ const handleSubmitRaport = (e) => {
             onSuccess: () => {
                 alert('Data berhasil disimpan');
             },
+            preserveScroll:true,
         });
     } else {
         post('/dashboard/profile/reports',{onSuccess: () => {
             alert('Data berhasil disimpan');
-        }});
+        },
+        preserveScroll:true,
+    });
     }
 }
 
@@ -124,11 +132,14 @@ const handleSubmitPrestasi = (e) => {
             onSuccess: () => {
                 alert('Data berhasil disimpan');
             },
+            preserveScroll:true,
         });
     } else {
         post('/dashboard/profile/achievement',{onSuccess: () => {
             alert('Data berhasil disimpan');
-        }});
+        },
+        preserveScroll:true,
+    });
     }
 }
 
@@ -140,11 +151,14 @@ const handleSubmitDocument = (e) => {
             onSuccess: () => {
                 alert('Data berhasil disimpan');
             },
+            preserveScroll:true,
         });
     } else {
         post('/dashboard/profile/document',{onSuccess: () => {
             alert('Data berhasil disimpan');
-        }});
+        },
+        preserveScroll:true,
+    });
     }
 }
     
@@ -469,7 +483,7 @@ const handleSubmitDocument = (e) => {
                             <div>
                                 <label htmlFor="raport">Raport</label>
                                 <input type="file" id="raport" name="raport" accept="application/pdf" onChange={(e) => setData('raport', e.target.files[0])} className="file-input file-input-bordered w-full" />
-                                <p className="text-sm text-gray-500">File dijadikan 1 PDF</p>
+                                <p className="text-sm text-gray-500">Jika memiliki lebih dari 1 file, harap dijadikan 1 file PDF</p>
                                 {errors.raport && <p className="text-red-500">{errors.raport}</p>}
                             </div>
                             <div>
@@ -482,10 +496,16 @@ const handleSubmitDocument = (e) => {
                             <div>
                                 <label htmlFor="sertifikat_lomba">Sertifikat Lomba</label>
                                 <input type="file" id="sertifikat_lomba" name="sertifikat_lomba" accept="application/pdf" onChange={(e) => setData('sertifikat_lomba', e.target.files[0])} className="file-input file-input-bordered w-full" />
-                                <p className="text-sm text-gray-500">File dijadikan 1 PDF</p>
+                                <p className="text-sm text-gray-500">Jika memiliki lebih dari 1 sertifikat, harap dijadikan 1 file PDF</p>
                                 {errors.sertifikat_lomba && <p className="text-red-500">{errors.sertifikat_lomba}</p>}
                             </div>
                             )}
+                            <div>
+                                <label htmlFor="ijazah">Ijazah/SKL</label>
+                                <input type="file" id="ijazah" name="ijazah" accept="application/pdf" onChange={(e) => setData('ijazah', e.target.files[0])} className="file-input file-input-bordered w-full" />
+                                <p className="text-sm text-gray-500">Jika memiliki lebih dari 1 file, harap dijadikan 1 file PDF</p>
+                                {errors.ijazah && <p className="text-red-500">{errors.ijazah}</p>}
+                            </div>
                         </div>
                         <div className="flex justify-end">
                             <button type="submit" className="btn bg-emerald-600 text-white px-10 rounded-full mt-5" disabled={processing}>{processing ? 'Proses...' : 'Simpan'}</button>
