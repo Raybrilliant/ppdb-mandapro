@@ -13,7 +13,8 @@ const checkStatus = (status) => {
             return '-';
     }
 }
-const Pendaftaran = ({user, status, search}) => {
+
+const Pendaftaran = ({user, status, search,type}) => {
     const [allSelected, setAllSelected] = useState(false);
     const [selected, setSelected] = useState([]);
     const {data, put, delete: del, setData, processing} = useForm({
@@ -77,6 +78,11 @@ const Pendaftaran = ({user, status, search}) => {
             <h1 className="text-2xl font-semibold">Pendaftaran</h1>
             <form className="flex items-center gap-2">
                 <input type="search" placeholder="Cari Nama / No Pendaftaran" name="s" defaultValue={search} className="input input-bordered w-full rounded-full" />
+                <select name="type" id="type" className="select w-1/4 rounded-full" defaultValue={type}>
+                    <option value="">Pilih Jalur Pendaftaran</option>
+                    <option value="prestasi">Prestasi</option>
+                    <option value="reguler">Reguler</option>
+                </select>
                 <select name="status" className="select w-1/6 rounded-full" defaultValue={status}>
                     <option value="">Pilih Status</option>
                     <option value="1">Lulus</option>
@@ -125,8 +131,8 @@ const Pendaftaran = ({user, status, search}) => {
                                 <td>{new Date(item?.user_detail?.birth_date).toLocaleDateString('id-ID', { year: 'numeric', month: 'long', day: 'numeric' })}</td>
                                 <td>{item?.user_detail?.phone}</td>
                                 <td>{item?.user_detail?.address}</td>
-                                <td>{regencies.find((regency) => regency.id == item?.user_detail?.city)?.name}</td>
-                                <td>{provinces.find((province) => province.id == item?.user_detail?.province)?.name}</td>
+                                <td>{regencies.find((regency) => regency.id === item?.user_detail?.city)?.name}</td>
+                                <td>{provinces.find((province) => province.id === item?.user_detail?.province)?.name}</td>
                                 <td><img src={'/storage/' + item?.user_detail?.photo} alt="photo" className="w-20 object-cover" /></td>
                             </tr>
                         ))}

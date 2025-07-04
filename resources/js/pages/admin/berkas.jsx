@@ -2,7 +2,7 @@ import AdminLayout from "@/layouts/admin-layout";
 import { Link } from "@inertiajs/react";
 import { useForm } from "@inertiajs/react";
 
-const Berkas = ({user, search}) => {
+const Berkas = ({user, search,type}) => {
     console.log(user);
     const {processing, put} = useForm();
 
@@ -18,6 +18,11 @@ const Berkas = ({user, search}) => {
             <h1 className="text-2xl font-semibold">Berkas</h1>
             <form className="flex items-center gap-2">
                 <input type="search" placeholder="Cari Nama / No Pendaftaran" name="s" defaultValue={search} className="input input-bordered w-full rounded-full" />
+                <select name="type" className='select w-1/4 rounded-full' id="type" defaultValue={type}>
+                    <option value="">Pilih Jalur Pendaftaran</option>
+                    <option value="prestasi">Prestasi</option>
+                    <option value="reguler">Reguler</option>
+                </select>
                 <button type="submit" className="btn btn-primary rounded-full">Cari</button>
             </form>
             <div className="overflow-x-auto">

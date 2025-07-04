@@ -21,11 +21,17 @@ class UserDetailController extends Controller
     {
         $input = $request->input('s');
         $status = $request->input('status');
+        $type = $request->input('type');
         $ripoff = explode('-', $input);
         $search = end($ripoff);
 
-        if($search || $status) {
+        if($search || $status || $type) {
             $user = User::where('role', 'user')
+            ->where(function ($query) use ($type) {
+                if($type) {
+                    $query->where('type', $type);
+                }
+            })
             ->where(function ($query) use ($search) {
                 $query->where('name', 'LIKE', "%$search%")->orWhere('id', (int)$search);
             })
@@ -36,7 +42,8 @@ class UserDetailController extends Controller
                 });
             })->orderBy('created_at', 'asc')->paginate(20);
         } else {
-            $user = User::where('role', 'user')->with('userDetail')->whereHas('userDetail', function ($query) use ($status) {
+            $user = User::where('role', 'user')
+            ->with('userDetail')->whereHas('userDetail', function ($query) use ($status) {
                 $query->where('validated', true)->when($status, function ($query) use ($status) {
                     $query->where('status', $status);
                 });
@@ -46,17 +53,24 @@ class UserDetailController extends Controller
             'user' => $user,
             'status' => $status,
             'search' => $input,
+            'type' => $type
         ]);
     }
 
     public function showBerkas(Request $request)
     {
         $input = $request->input('s');
+        $type = $request->input('type');
         $ripoff = explode('-', $input);
         $search = end($ripoff);
 
-        if($search) {
+        if($search || $type) {
             $user = User::where('role', 'user')
+            ->where(function ($query) use ($type) {
+                if($type) {
+                    $query->where('type', $type);
+                }
+            })
             ->where(function ($query) use ($search) {
                 $query->where('name', 'LIKE', "%$search%")->orWhere('id', (int)$search);
             })
@@ -72,6 +86,7 @@ class UserDetailController extends Controller
         return inertia('admin/berkas', [
             'user' => $user,
             'search' => $input,
+            'type' => $type
         ]);
     }
     public function countDashboard()
