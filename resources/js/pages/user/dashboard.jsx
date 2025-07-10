@@ -5,7 +5,6 @@ import { useEffect, useState } from "react";
 import { regencies, provinces } from "@/components/geolocation";
 
 function Dashboard({user,mapel,tahap}) {
-    console.log(user.nomor_pendaftaran);
     const [lengkap, setLengkap] = useState(false);
     const {data, setData, put, processing} = useForm({
         grades: {
@@ -82,7 +81,7 @@ function Dashboard({user,mapel,tahap}) {
                 announcement = (
                     <div className="alert alert-warning text-center my-2" key={item?.announcement?.id}>
                         <p className="text-sm font-semibold">Pengumuman |</p>
-                        <p>{item?.announcement?.content}</p>
+                        <p dangerouslySetInnerHTML={{ __html: item?.announcement?.content }}></p>
                     </div>
                 )
             }
@@ -265,11 +264,13 @@ function Dashboard({user,mapel,tahap}) {
                                 </tr>
                             </thead>
                             <tbody>
+                                {user.achievements.map((achievement) => (
                                 <tr>
-                                    <td className="capitalize">{user?.achievements?.level}</td>
-                                    <td className="capitalize">{user?.achievements?.name}</td>
-                                    <td>{user?.achievements?.year}</td>
+                                    <td className="capitalize">{achievement?.level}</td>
+                                    <td className="capitalize">{achievement?.name}</td>
+                                    <td>{achievement?.year}</td>
                                 </tr>
+                                ))}
                             </tbody>
                         </table>):(<p>Tidak ada prestasi</p>)}
                 </div>

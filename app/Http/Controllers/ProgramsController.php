@@ -3,62 +3,69 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Program;
+use Illuminate\Support\Facades\Storage;
 
 class ProgramsController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
+    public function create(){
+        return inertia('admin/CRUD/program-unggulan');
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+    public function edit($id){
+        $program = Program::find($id);
+        return inertia('admin/CRUD/program-unggulan', [
+            'program' => $program,
+        ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
+    public function store(Request $request){
+        $request->validate([
+            'nama' => 'required',
+            'deskripsi' => 'required',
+            'icon' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
+        $icon = $request->file('icon');
+        $icon = $icon->store('icon', 'public');
+        $data = [
+            'name' => $request->nama,
+            'description' => $request->deskripsi,
+            'image' => $icon,
+        ];
+        Program::create($data);
+        return redirect('/admin/setting');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
+    public function update(Request $request, $id){
+        $request->validate([
+            'nama' => 'required',
+            'deskripsi' => 'required',
+            'icon' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
+        $program = Program::find($id);
+        $request->icon = $program->image;
+        if ($request->hasFile('icon')) {
+            $oldIcon = $program->image;
+            Storage::delete($oldIcon);
+            $request->icon = $request->file('icon')->store('icon', 'public');
+        }
+        $data = [
+            'name' => $request->nama,
+            'description' => $request->deskripsi,
+            'image' => $request->icon,
+        ];
+        $program->update($data);
+        return redirect('/admin/setting');
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
+    public function destroy($id){
+        $program = Program::find($id);
+        $oldIcon = $program->image;
+        if ($oldIcon) {
+            Storage::delete($oldIcon);
+        }
+        $program->delete();
+        return redirect('/admin/setting');
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
-    }
 }

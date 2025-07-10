@@ -16,17 +16,19 @@ class AchievementsController extends Controller
     {
         $request->user_id = Auth::user()->id;
         $request->validate([
-            'achievement' => 'required',
-            'achievement_type' => 'required',
-            'achievement_year' => 'required',
+            'achievements.*.name' => 'required|string',
+            'achievements.*.level' => 'required|string',
+            'achievements.*.year' => 'required|integer',
         ]);
-        $data = [
-            'user_id' => $request->user_id,
-            'name' => $request->achievement,
-            'level' => $request->achievement_type,
-            'year' => $request->achievement_year,
-        ];
-        Achievements::create($data);
+        foreach ($request->achievements as $achievement) {
+            $data = [
+                'user_id' => $request->user_id,
+                'name' => $achievement['name'],
+                'level' => $achievement['level'],
+                'year' => $achievement['year'],
+            ];
+            Achievements::create($data);
+        }
         return back();
     }
 
@@ -34,20 +36,27 @@ class AchievementsController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request)
     {
         $request->validate([
-            'achievement' => 'required',
-            'achievement_type' => 'required',
-            'achievement_year' => 'required',
+            'achievements.*.name' => 'required|string',
+            'achievements.*.level' => 'required|string',
+            'achievements.*.year' => 'required|integer',
         ]);
-        $data = [
-            'user_id' => $request->user_id,
-            'name' => $request->achievement,
-            'level' => $request->achievement_type,
-            'year' => $request->achievement_year,
-        ];
-        Achievements::find($id)->update($data);
+        $request->user_id = Auth::user()->id;
+        $oldAchievements = Achievements::where('user_id', $request->user_id)->get();
+        foreach ($oldAchievements as $oldAchievement) {
+            $oldAchievement->delete();
+        }
+        foreach ($request->achievements as $achievement) {
+            $data = [
+                'user_id' => $request->user_id,
+                'name' => $achievement['name'],
+                'level' => $achievement['level'],
+                'year' => $achievement['year'],
+            ];
+            Achievements::create($data);
+        }
         return back();
     }
 }

@@ -20,7 +20,9 @@
     "dependencies": {
         "@inertiajs/react": "^2.0.12",
         "@vitejs/plugin-react": "^4.5.2",
+        "dompurify": "^3.2.6",
         "lucide-react": "^0.516.0",
+        "quill": "2.0.3",
         "react-dom": "^19.1.0"
     }
 }

@@ -36,7 +36,7 @@ const Tahapan = ({ level }) => {
         <div>
             <div className="flex justify-between items-center">
                 <h1 className="text-2xl font-semibold">{level ? 'Edit' : 'Tambah'} Tahapan</h1>
-                <button className="btn btn-error btn-xs" onClick={handleDelete}>Hapus</button>
+                <button className="btn btn-error btn-xs" hidden={!level} onClick={handleDelete}>Hapus</button>
             </div>
             <form onSubmit={handleSubmit} className="space-y-4 my-4 w-full">
                 <div className="floating-label">

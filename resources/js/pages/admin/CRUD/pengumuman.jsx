@@ -1,5 +1,6 @@
 import AdminLayout from "@/layouts/admin-layout";
 import { useForm } from "@inertiajs/react";
+import QuillEditor from "@/components/quillEditor";
 
 const Pengumuman = ({ announcement, levels }) => {
     const { data, setData, processing, post, put, delete: del } = useForm({
@@ -36,12 +37,12 @@ const handleDelete = () => {
         <div>
             <div className="flex justify-between items-center">
             <h1 className="text-2xl font-semibold">{announcement ? 'Edit' : 'Tambah'} Pengumuman</h1>
-            <button className="btn btn-error btn-xs" onClick={handleDelete}>Hapus</button>
+            <button className="btn btn-error btn-xs" hidden={!announcement} onClick={handleDelete}>Hapus</button>
             </div>
             <form onSubmit={handleSubmit} className="space-y-4 my-4 w-full">
                 <div className="floating-label">
                     <span>Pengumuman</span>
-                    <textarea className="textarea textarea-bordered w-full" name="pengumuman" placeholder="Pengumuman" value={data.content} onChange={(e) => setData('content', e.target.value)} required></textarea>
+                    <QuillEditor initialValue={data.content} onChange={(value) => setData('content', value)}/>
                 </div>
                 <div className="floating-label">
                     <span>Tahap</span>

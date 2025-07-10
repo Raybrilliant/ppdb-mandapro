@@ -73,7 +73,7 @@ class User extends Authenticatable
     }
     public function achievements()
     {
-        return $this->hasOne(Achievements::class);
+        return $this->hasMany(Achievements::class);
     }
     public function parents()
     {

@@ -14,6 +14,8 @@ use App\Http\Controllers\FAQsController;
 use App\Http\Controllers\AchievementsController;
 use App\Http\Controllers\ExportController;
 use App\Http\Controllers\LandingPagesController;
+use App\Http\Controllers\TestimoniController;
+use App\Http\Controllers\ProgramsController;
 
 Route::get('/', [LandingPagesController::class, 'index']);
 
@@ -36,8 +38,8 @@ Route::get('/logout', [UserController::class, 'logout']);
 Route::middleware('user')->group(function () {
     Route::prefix('dashboard')->group(function () {    
     // Prestasi
-    Route::post('/profile/achievement', [AchievementsController::class, 'store']);
-    Route::put('/profile/achievement/{id}', [AchievementsController::class, 'update']);
+    Route::post('/profile/achievements', [AchievementsController::class, 'store']);
+    Route::put('/profile/achievements', [AchievementsController::class, 'update']);
 
     // Orang Tua
     Route::post('/profile/parents', [ParentsController::class, 'store']);
@@ -102,6 +104,27 @@ Route::middleware('admin')->group(function () {
         Route::get('/faq/{id}', [FAQsController::class, 'edit']);
         Route::put('/faq/{id}', [FAQsController::class, 'update']);
         Route::delete('/faq/{id}', [FAQsController::class, 'destroy']);
+
+        // Landing Page
+        Route::get('/landing-page', [LandingPagesController::class, 'create']);
+        Route::post('/landing-page', [LandingPagesController::class, 'store']);
+        Route::get('/landing-page/{id}', [LandingPagesController::class, 'edit']);
+        Route::post('/landing-page/{id}', [LandingPagesController::class, 'update']);
+        Route::delete('/landing-page/{id}', [LandingPagesController::class, 'destroy']);
+
+        // Program Unggulan
+        Route::get('/program-unggulan', [ProgramsController::class, 'create']);
+        Route::post('/program-unggulan', [ProgramsController::class, 'store']);
+        Route::get('/program-unggulan/{id}', [ProgramsController::class, 'edit']);
+        Route::post('/program-unggulan/{id}', [ProgramsController::class, 'update']);
+        Route::delete('/program-unggulan/{id}', [ProgramsController::class, 'destroy']);
+
+        // Testimoni
+        Route::get('/testimoni', [TestimoniController::class, 'create']);
+        Route::post('/testimoni', [TestimoniController::class, 'store']);
+        Route::get('/testimoni/{id}', [TestimoniController::class, 'edit']);
+        Route::post('/testimoni/{id}', [TestimoniController::class, 'update']);
+        Route::delete('/testimoni/{id}', [TestimoniController::class, 'destroy']);
     });
     });
 });

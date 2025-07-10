@@ -3,75 +3,69 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Testimoni;
+use Illuminate\Support\Facades\Storage;
 
 class TestimoniController extends Controller
 {
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
         return inertia('admin/CRUD/testimoni');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        $request->validate([
-            'name' => 'required',
-            'description' => 'required',
-        ]);
-
-        $data = [
-            'name' => $request->name,
-            'description' => $request->description,
-        ];
-
-        Testimoni::create($data);
-
-        return redirect('/admin/setting/');
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        $testimoni = Testimoni::findOrFail($id);
+    public function edit($id){
+        $testimoni = Testimoni::find($id);
         return inertia('admin/CRUD/testimoni', [
             'testimoni' => $testimoni,
         ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
+    public function store(Request $request){
         $request->validate([
             'name' => 'required',
-            'description' => 'required',
+            'message' => 'required',
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
-
+        $image = $request->file('image');
+        $image = $image->store('image', 'public');
         $data = [
             'name' => $request->name,
-            'description' => $request->description,
+            'message' => $request->message,
+            'image' => $image,
         ];
-
-        Testimoni::find($id)->update($data);
-
-        return redirect('/admin/setting/');
+        Testimoni::create($data);
+        return redirect('/admin/setting');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        Testimoni::find($id)->delete();
+    public function update(Request $request, $id){
+        $request->validate([
+            'name' => 'required',
+            'message' => 'required',
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
+        $testimoni = Testimoni::find($id);
+        $request->image = $testimoni->image;
+        if ($request->hasFile('image')) {
+            $oldImage = $testimoni->image;
+            Storage::delete($oldImage);
+            $request->image = $request->file('image')->store('image', 'public');
+        }
+        $data = [
+            'name' => $request->name,
+            'message' => $request->message,
+            'image' => $request->image,
+        ];
+        $testimoni->update($data);
+        return redirect('/admin/setting');
+    }
 
-        return redirect('/admin/setting/');
+    public function destroy($id){
+        $testimoni = Testimoni::find($id);
+        $oldImage = $testimoni->image;
+        if ($oldImage) {
+            Storage::delete($oldImage);
+        }
+        $testimoni->delete();
+        return redirect('/admin/setting');
     }
 }

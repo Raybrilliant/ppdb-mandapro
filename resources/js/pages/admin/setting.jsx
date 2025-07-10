@@ -2,7 +2,7 @@ import AdminLayout from "@/layouts/admin-layout";
 import { Link } from "@inertiajs/react";
 import { Plus } from "lucide-react";
 
-const Setting = ({levels,faqs,subjects}) => {
+const Setting = ({levels,faqs,subjects,landingPage,testimonis,programs}) => {
     return (
         <div className="space-y-4">
             <h1 className="text-2xl font-semibold">Setting</h1>
@@ -93,7 +93,7 @@ const Setting = ({levels,faqs,subjects}) => {
             <hr />
 
             {/* Testimoni */}
-            {/* <div className="flex justify-between items-center">
+            <div className="flex justify-between items-center">
                 <h2 className="text-xl font-semibold">Testimoni</h2>
                 <Link href="/admin/setting/testimoni" className="btn btn-neutral btn-sm"><Plus/> Tambah Testimoni</Link>
             </div>
@@ -113,7 +113,7 @@ const Setting = ({levels,faqs,subjects}) => {
                         <tr key={index}>
                             <td>{index + 1}</td>
                             <td>{item.name}</td>
-                            <td>{item.description}</td>
+                            <td>{item.message}</td>
                             <td>
                                 <button className="btn btn-warning btn-xs">Edit</button>
                             </td>
@@ -122,11 +122,11 @@ const Setting = ({levels,faqs,subjects}) => {
                 </tbody>
             </table>
             </div>
-            <hr /> */}
+            <hr />
             {/* Program */}
-            {/* <div className="flex justify-between items-center">
+            <div className="flex justify-between items-center">
                 <h2 className="text-xl font-semibold">Program</h2>
-                <Link href="/admin/setting/program" className="btn btn-neutral btn-sm"><Plus/> Tambah Program</Link>
+                <Link href="/admin/setting/program-unggulan" className="btn btn-neutral btn-sm"><Plus/> Tambah Program</Link>
             </div>
             <div className="overflow-x-auto">
                 <table className="table table-zebra">
@@ -146,14 +146,14 @@ const Setting = ({levels,faqs,subjects}) => {
                             <td>{item.name}</td>
                             <td>{item.description}</td>
                             <td>
-                                <button className="btn btn-warning btn-xs">Edit</button>
+                                <Link href={`/admin/setting/program-unggulan/${item.id}`} className="btn btn-warning btn-xs">Edit</Link>
                             </td>
                         </tr>
                     ))}
                 </tbody>
             </table>
             </div>
-            <hr /> */}
+            <hr />
             {/* FAQ */}
             <div className="flex justify-between items-center">
                 <h2 className="text-xl font-semibold">FAQ</h2>
@@ -183,6 +183,16 @@ const Setting = ({levels,faqs,subjects}) => {
                     ))}
                 </tbody>
             </table>
+            </div>
+            <hr />
+            {/* Landing Page */}
+            <div className="flex justify-between items-center">
+                <h2 className="text-xl font-semibold">Landing Page</h2>
+                {landingPage ? (
+                    <Link href={`/admin/setting/landing-page/${landingPage.id}`} className="btn btn-warning btn-sm">Edit Landing Page</Link>
+                ) : (
+                    <Link href="/admin/setting/landing-page" className="btn btn-neutral btn-sm"><Plus/> Tambah Landing Page</Link>
+                )}
             </div>
         </div>
     );

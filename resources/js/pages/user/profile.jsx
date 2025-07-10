@@ -54,9 +54,7 @@ function Profile({user,mapel}) {
         },
 
         // Data Prestasi
-        achievement:user?.achievements?.name,
-        achievement_type:user?.achievements?.level,
-        achievement_year:user?.achievements?.year,
+        achievements:user?.achievements || [{name:'',level:'',year:''}],
 
         // Data Dokumen
         raport:null,
@@ -127,21 +125,32 @@ const handleSubmitRaport = (e) => {
 // Input Data Prestasi
 const handleSubmitPrestasi = (e) => {
     e.preventDefault();
-    if (user?.achievement?.id) {
-        put('/dashboard/profile/achievement/' + user?.achievement?.id,{
-            onSuccess: () => {
-                alert('Data berhasil disimpan');
-            },
-            preserveScroll:true,
-        });
-    } else {
-        post('/dashboard/profile/achievement',{onSuccess: () => {
+    const requestMethod = Array.isArray(user?.achievements) && user.achievements.length > 0 ? put : post;
+
+    requestMethod('/dashboard/profile/achievements', {
+        achievements: data.achievements,
+        onSuccess: () => {
             alert('Data berhasil disimpan');
         },
-        preserveScroll:true,
+        preserveScroll: true,
     });
-    }
-}
+};
+
+const handleAchievementChange = (index, field, value) => {
+    const updated = [...data.achievements];
+    updated[index][field] = value;
+    setData("achievements", updated);
+};
+
+const removeAchievement = (index) => {
+    const updated = [...data.achievements];
+    updated.splice(index, 1);
+    setData("achievements", updated);
+};
+
+const addAchievement = () => {
+    setData("achievements", [...data.achievements, { name: "", level: "", year: "" }]);
+};
 
 // Input Data Dokumen
 const handleSubmitDocument = (e) => {
@@ -442,37 +451,83 @@ const handleSubmitDocument = (e) => {
             </section>
             {/* Prestasi */}
             {user?.type === 'prestasi' && (
-            <section className="card outline outline-black my-10">
-                <div className="p-5">
-                    <h1 className="text-xl font-bold mb-5">Prestasi</h1>
-                    <form onSubmit={handleSubmitPrestasi}>
-                        <div className="grid grid-cols-3 gap-5">
-                            <div>
-                                <label htmlFor="achievement">Prestasi</label>
-                                <input type="text" id="achievement" name="achievement" defaultValue={data.achievement} onChange={(e) => setData('achievement', e.target.value)} className="input input-bordered w-full" required  />
-                            </div>
-                            <div>
-                                <label htmlFor="achievement_type">Tingkat</label>
-                                <select id="achievement_type" name="achievement_type" defaultValue={data.achievement_type} onChange={(e) => setData('achievement_type', e.target.value)} className="select select-bordered w-full" required>
-                                    <option disabled selected>Pilih Tingkat</option>
-                                    <option value="nasional">Nasional</option>
-                                    <option value="provinsi">Provinsi</option>
-                                    <option value="kota/kabupaten">Kota/Kabupaten</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label htmlFor="achievement_year">Tahun Prestasi</label>
-                                <input type="number" id="achievement_year" name="achievement_year" defaultValue={data.achievement_year} onChange={(e) => setData('achievement_year', e.target.value)} className="input input-bordered w-full" required />
-                            </div>
-                        </div>
-                        <div className="flex justify-end">
-                            <button type="submit" className="btn bg-emerald-600 text-white px-10 rounded-full mt-5" disabled={processing}>
-                                {processing ? 'Proses...' : 'Simpan'}
+                <section className="card outline outline-black my-10">
+                    <div className="p-5">
+                        <h1 className="text-xl font-bold mb-5">Prestasi</h1>
+                        <form onSubmit={handleSubmitPrestasi}>
+                            {data.achievements.map((achievement, index) => (
+                                <div key={index} className="grid grid-cols-3 gap-5 mb-4">
+                                    <div>
+                                        <label htmlFor={`achievement_${index}`}>Prestasi</label>
+                                        <input
+                                            type="text"
+                                            id={`achievement_${index}`}
+                                            value={achievement.name}
+                                            onChange={(e) => handleAchievementChange(index, "name", e.target.value)}
+                                            className="input input-bordered w-full"
+                                            required
+                                        />
+                                    </div>
+                                    <div>
+                                        <label htmlFor={`achievement_type_${index}`}>Tingkat</label>
+                                        <select
+                                            id={`achievement_type_${index}`}
+                                            value={achievement.level}
+                                            onChange={(e) => handleAchievementChange(index, "level", e.target.value)}
+                                            className="select select-bordered w-full"
+                                            required
+                                        >
+                                            <option value="" disabled>Pilih Tingkat</option>
+                                            <option value="nasional">Nasional</option>
+                                            <option value="provinsi">Provinsi</option>
+                                            <option value="kota/kabupaten">Kota/Kabupaten</option>
+                                        </select>
+                                    </div>
+                                    <div className="flex items-end gap-2">
+                                        <div className="w-full">
+                                            <label htmlFor={`achievement_year_${index}`}>Tahun Prestasi</label>
+                                            <input
+                                                type="number"
+                                                id={`achievement_year_${index}`}
+                                                value={achievement.year}
+                                                onChange={(e) => handleAchievementChange(index, "year", e.target.value)}
+                                                className="input input-bordered w-full"
+                                                required
+                                            />
+                                        </div>
+                                        {data.achievements.length > 1 && (
+                                            <button
+                                                type="button"
+                                                onClick={() => removeAchievement(index)}
+                                                className="btn btn-error btn-sm mt-auto"
+                                            >
+                                                Hapus
+                                            </button>
+                                        )}
+                                    </div>
+                                </div>
+                            ))}
+
+                            <button
+                                type="button"
+                                onClick={addAchievement}
+                                className="btn btn-outline btn-primary mb-4"
+                            >
+                                + Tambah Prestasi
                             </button>
-                        </div>
-                    </form>
-                </div>
-            </section>
+
+                            <div className="flex justify-end">
+                                <button
+                                    type="submit"
+                                    className="btn bg-emerald-600 text-white px-10 rounded-full mt-5"
+                                    disabled={processing}
+                                >
+                                    {processing ? "Proses..." : "Simpan"}
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </section>
             )}
             {/* Upload Dokumen */}
             <section className="card outline outline-black my-10">
