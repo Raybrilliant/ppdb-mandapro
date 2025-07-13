@@ -61,6 +61,7 @@ class DocumentsController extends Controller
         $newRaportPath = $document->raport;
         $newKartuKeluargaPath = $document->kartu_keluarga;
         $newSertifikatLombaPath = $document->sertifikat_lomba;
+        $newIjazahPath = $document->ijazah;
 
         if ($request->hasFile('raport')) {
             if ($document->raport) {
